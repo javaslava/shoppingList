@@ -9,6 +9,10 @@ public class Product {
     private String name;
     private BigDecimal price;
 
+    private Category category;
+    private BigDecimal discount;
+    private String description;
+
     public Long getId() {
         return id;
     }
@@ -33,6 +37,20 @@ public class Product {
         this.price = price;
     }
 
+    public Category getCategory() { return category; }
+
+    public void setCategory(Category category) { this.category = category; }
+
+    public BigDecimal getDiscount() { return discount; }
+
+    public void setDiscount(BigDecimal discount) { this.discount = discount; }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) { this.description = description; }
+
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -41,20 +59,14 @@ public class Product {
         Product product = (Product) o;
         return Objects.equals(id, product.id) &&
                 Objects.equals(name, product.name) &&
-                Objects.equals(price, product.price);
+                Objects.equals(price, product.price) &&
+                category == product.category &&
+                Objects.equals(discount, product.discount) &&
+                Objects.equals(description, product.description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price);
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                '}';
+        return Objects.hash(id, name, price, category, discount, description);
     }
 }
