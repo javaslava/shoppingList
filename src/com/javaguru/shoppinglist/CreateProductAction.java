@@ -30,8 +30,8 @@ public class CreateProductAction implements Action {
             new NameLengthValidator().validate(name);
             product.setName(name);
 
-            isPrice(product, scanner);
-            isDiscount(product, scanner);
+            assignPrice(product, scanner);
+            assignDiscount(product, scanner);
 
         } catch (ValidationException ex) {
             System.err.println(ex.getMessage());
@@ -45,15 +45,15 @@ public class CreateProductAction implements Action {
         }
     }
 
-    private static void isPrice(Product product, Scanner scanner) {
+    private void assignPrice(Product product, Scanner scanner) {
         System.out.println("Enter product price: ");
-        boolean isPrice = false;
-        while (!isPrice) {
+        boolean priceIsSpecified = false;
+        while (!priceIsSpecified) {
             String price = scanner.nextLine();
             try {
                 new PriceValidator().validate(new BigDecimal(price));
                 product.setPrice(new BigDecimal(price));
-                isPrice = true;
+                priceIsSpecified = true;
             } catch (ValidationException ex) {
                 System.err.println(ex.getMessage());
                 System.out.println("Please, enter correct product price: ");
@@ -61,18 +61,19 @@ public class CreateProductAction implements Action {
         }
     }
 
-    private static void isDiscount(Product product, Scanner scanner) {
+    private void assignDiscount(Product product, Scanner scanner) {
         System.out.println("If product has discount, please enter it: ");
-        boolean isDiscount = false;
-        while (!isDiscount) {
+        boolean discountIsSpecified = false;
+        while (!discountIsSpecified) {
+
             String discount = scanner.nextLine();
-            if (discount == null) {
+            if (discount.equals("")) {
                 discount = "0";
             }
             try {
                 new DiscountValidator().validate(new BigDecimal(discount));
                 product.setDiscount(new BigDecimal(discount));
-                isDiscount = true;
+                discountIsSpecified = true;
             } catch (ValidationException ex) {
                 System.err.println(ex.getMessage());
                 System.out.println("Please, enter correct product discount: ");

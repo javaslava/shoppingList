@@ -13,4 +13,5 @@ public class DiscountValidator {
             throw new ValidationException("Product's discount possible 0 - 100% ");
         }
     }
+
 }
