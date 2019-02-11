@@ -1,4 +1,4 @@
-package com.javaguru.shoppinglist.validators;
+package com.javaguru.shoppinglist.service.validation;
 
 import java.math.BigDecimal;
 

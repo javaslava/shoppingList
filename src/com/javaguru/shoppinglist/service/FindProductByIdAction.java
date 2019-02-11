@@ -1,4 +1,7 @@
-package com.javaguru.shoppinglist;
+package com.javaguru.shoppinglist.service;
+
+import com.javaguru.shoppinglist.domain.Product;
+import com.javaguru.shoppinglist.service.validation.IdNotNullValidator;
 
 import java.util.Scanner;
 
@@ -17,8 +20,14 @@ public class FindProductByIdAction implements Action {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter id: ");
         Long id = scanner.nextLong();
-        Product response = productService.findBy(id);
-        System.out.println("Response: " + response);
+        try{
+            new IdNotNullValidator().validate(id);
+            Product response = productService.findBy(id);
+            System.out.println("Response: " + response);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @Override

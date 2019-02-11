@@ -24,4 +24,4 @@ dist/
 nbdist/
 .nb-gradle/
 
-.DS_Store
+.DS_Store ###out/

@@ -1,4 +1,4 @@
-package com.javaguru.shoppinglist;
+package com.javaguru.shoppinglist.domain;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -37,19 +37,29 @@ public class Product {
         this.price = price;
     }
 
-    public Category getCategory() { return category; }
+    public Category getCategory() {
+        return category;
+    }
 
-    public void setCategory(Category category) { this.category = category; }
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
-    public BigDecimal getDiscount() { return discount; }
+    public BigDecimal getDiscount() {
+        return discount;
+    }
 
-    public void setDiscount(BigDecimal discount) { this.discount = discount; }
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
+    }
 
-    public String getDescription() { return description; }
+    public String getDescription() {
+        return description;
+    }
 
-    public void setDescription(String description) { this.description = description; }
-
-
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
 
     @Override
@@ -65,8 +75,28 @@ public class Product {
                 Objects.equals(description, product.description);
     }
 
+    private String checkDiscount() {
+        if (discount != null) {
+            return ", discount=" + discount;
+        } else {
+            return ", NO DISCOUNT/too low price";
+        }
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, name, price, category, discount, description);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", category=" + category +
+                checkDiscount() +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

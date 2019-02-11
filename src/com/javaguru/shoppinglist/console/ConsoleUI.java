@@ -1,4 +1,6 @@
-package com.javaguru.shoppinglist;
+package com.javaguru.shoppinglist.console;
+
+import com.javaguru.shoppinglist.service.Action;
 
 import java.util.List;
 import java.util.Scanner;

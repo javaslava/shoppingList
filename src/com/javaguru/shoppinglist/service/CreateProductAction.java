@@ -1,6 +1,8 @@
-package com.javaguru.shoppinglist;
+package com.javaguru.shoppinglist.service;
 
-import com.javaguru.shoppinglist.validators.*;
+import com.javaguru.shoppinglist.domain.Category;
+import com.javaguru.shoppinglist.domain.Product;
+import com.javaguru.shoppinglist.service.validation.*;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -21,6 +23,7 @@ public class CreateProductAction implements Action {
         assignProductFields(product);
 
         try {
+            new ProductNotNullValidator().validate(product);
             Long response = productService.create(product);
             System.out.println("Response: " + response);
         } catch (Exception e) {
@@ -33,8 +36,8 @@ public class CreateProductAction implements Action {
         Scanner scanner = new Scanner(System.in);
 
         for (int i = 0; i < productFieldsArray.length; i++) {
-            BigDecimal minPriceForDiscount = new BigDecimal("20");
-            if (product.getPrice().compareTo(minPriceForDiscount) == -1) {
+
+            if (product.getPrice().compareTo(new BigDecimal("20")) == -1) {
                 if (i == 2) {
                     continue;
                 }
@@ -78,7 +81,8 @@ public class CreateProductAction implements Action {
     }
 
     private void setNameField(Product product, String name) {
-        productService.checkForSameProductName(name);
+
+        new SameProductNameValidator().validate(productService.getDatabaseValues(), name);
         new NameLengthValidator().validate(name);
         product.setName(name);
     }

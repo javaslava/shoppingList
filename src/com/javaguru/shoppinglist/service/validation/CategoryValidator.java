@@ -1,6 +1,6 @@
-package com.javaguru.shoppinglist.validators;
+package com.javaguru.shoppinglist.service.validation;
 
-import com.javaguru.shoppinglist.Category;
+import com.javaguru.shoppinglist.domain.Category;
 
 import java.util.Arrays;
 
