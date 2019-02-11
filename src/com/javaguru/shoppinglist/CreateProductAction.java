@@ -1,9 +1,6 @@
 package com.javaguru.shoppinglist;
 
-import com.javaguru.shoppinglist.validators.DiscountValidator;
-import com.javaguru.shoppinglist.validators.NameLengthValidator;
-import com.javaguru.shoppinglist.validators.PriceValidator;
-import com.javaguru.shoppinglist.validators.ValidationException;
+import com.javaguru.shoppinglist.validators.*;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -20,22 +17,8 @@ public class CreateProductAction implements Action {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
         Product product = new Product();
-
-        System.out.println("Enter product name:");
-        String name = scanner.nextLine();
-
-        try {
-            new NameLengthValidator().validate(name);
-            product.setName(name);
-
-            assignPrice(product, scanner);
-            assignDiscount(product, scanner);
-
-        } catch (ValidationException ex) {
-            System.err.println(ex.getMessage());
-        }
+        assignProductFields(product);
 
         try {
             Long response = productService.create(product);
@@ -45,42 +28,97 @@ public class CreateProductAction implements Action {
         }
     }
 
-    private void assignPrice(Product product, Scanner scanner) {
-        System.out.println("Enter product price: ");
-        boolean priceIsSpecified = false;
-        while (!priceIsSpecified) {
-            String price = scanner.nextLine();
-            try {
-                new PriceValidator().validate(new BigDecimal(price));
-                product.setPrice(new BigDecimal(price));
-                priceIsSpecified = true;
-            } catch (ValidationException ex) {
-                System.err.println(ex.getMessage());
-                System.out.println("Please, enter correct product price: ");
+    private void assignProductFields(Product product) {
+        String[] productFieldsArray = {"name", "price", "discount", "description", "category"};
+        Scanner scanner = new Scanner(System.in);
+
+        for (int i = 0; i < productFieldsArray.length; i++) {
+            BigDecimal minPriceForDiscount = new BigDecimal("20");
+            if (product.getPrice().compareTo(minPriceForDiscount) == -1) {
+                if (i == 2) {
+                    continue;
+                }
             }
+
+            System.out.println("Enter product's " + productFieldsArray[i] + ":");
+            boolean fieldAssigned = false;
+
+            while (!fieldAssigned) {
+                String userInput = scanner.nextLine();
+                try {
+                    chooseProductFieldToFill(product, productFieldsArray[i], userInput);
+                    fieldAssigned = true;
+                } catch (ValidationException ex) {
+                    System.err.println(ex.getMessage());
+                    System.out.println("Please, enter correct product's " + productFieldsArray[i] + ":");
+                }
+            }
+
         }
     }
 
-    private void assignDiscount(Product product, Scanner scanner) {
-        System.out.println("If product has discount, please enter it: ");
-        boolean discountIsSpecified = false;
-        while (!discountIsSpecified) {
-
-            String discount = scanner.nextLine();
-            if (discount.equals("")) {
-                discount = "0";
-            }
-            try {
-                new DiscountValidator().validate(new BigDecimal(discount));
-                product.setDiscount(new BigDecimal(discount));
-                discountIsSpecified = true;
-            } catch (ValidationException ex) {
-                System.err.println(ex.getMessage());
-                System.out.println("Please, enter correct product discount: ");
-            }
+    private void chooseProductFieldToFill(Product product, String productField, String userInput) {
+        switch (productField) {
+            case "name":
+                setNameField(product, userInput);
+                break;
+            case "price":
+                setPriceField(product, userInput);
+                break;
+            case "discount":
+                setDiscountField(product, userInput);
+                break;
+            case "description":
+                setDescriptionField(product, userInput);
+                break;
+            case "category":
+                setCategoryField(product, userInput);
+                break;
         }
     }
 
+    private void setNameField(Product product, String name) {
+        productService.checkForSameProductName(name);
+        new NameLengthValidator().validate(name);
+        product.setName(name);
+    }
+
+    private void setPriceField(Product product, String price) {
+        if (price.equals("")) {
+            price = "0";
+        }
+        if (price.contains(",")) {
+            price = price.replace(',', '.');
+        }
+        new PriceValidator().validate(new BigDecimal(price));
+        product.setPrice(new BigDecimal(price).setScale(2, BigDecimal.ROUND_HALF_UP));
+    }
+
+    private void setDiscountField(Product product, String discount) {
+        if (discount.equals("")) {
+            discount = "0";
+        }
+        if (discount.contains(",")) {
+            discount = discount.replace(',', '.');
+        }
+        new DiscountValidator().validate(new BigDecimal(discount));
+        product.setDiscount(new BigDecimal(discount).setScale(2, BigDecimal.ROUND_HALF_UP));
+    }
+
+    private void setDescriptionField(Product product, String description) {
+        if (description.equals("")) {
+            description = "NO DESCRIPTION";
+        }
+        new DescriptionValidator().validate(description);
+        product.setDescription(description);
+    }
+
+    private void setCategoryField(Product product, String category) {
+        category = category.toUpperCase();
+        new CategoryValidator().validate(category);
+        Category productCategory = Category.valueOf(category);
+        product.setCategory(productCategory);
+    }
 
     @Override
     public String toString() {

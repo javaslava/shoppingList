@@ -7,7 +7,7 @@ public class Product {
 
     private Long id;
     private String name;
-    private BigDecimal price;
+    private BigDecimal price = new BigDecimal("10");
 
     private Category category;
     private BigDecimal discount;

@@ -6,4 +6,6 @@ public interface ProductService {
 
     Product findBy(Long id);
 
+    void checkForSameProductName(String name);
+
 }
