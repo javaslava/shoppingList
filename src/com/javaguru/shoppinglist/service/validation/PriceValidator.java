@@ -1,12 +1,14 @@
 package com.javaguru.shoppinglist.service.validation;
 
-import java.math.BigDecimal;
+import com.javaguru.shoppinglist.domain.Product;
+import com.javaguru.shoppinglist.repository.ProductRepository;
 
-public class PriceValidator {
-    public void validate(BigDecimal price) {
-        if (price.signum() == -1) {
+public class PriceValidator implements ProductValidationRule{
+    @Override
+    public void validate(Product product, ProductRepository repo) {
+        if (product.getPrice().signum() == -1) {
             throw new ValidationException("Product's price must be a positive number.");
-        }else if(price.signum() == 0){
+        }else if(product.getPrice().signum() == 0){
             throw new ValidationException("Product must have a price.");
         }
     }

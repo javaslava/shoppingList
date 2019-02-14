@@ -1,36 +1,44 @@
 package com.javaguru.shoppinglist.console;
 
-import com.javaguru.shoppinglist.service.Action;
+import com.javaguru.shoppinglist.repository.ProductRepository;
+import com.javaguru.shoppinglist.service.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
 
-    private final List<Action> actions;
-
-    public ConsoleUI(List<Action> actions) {
-        this.actions = actions;
-    }
+    private ProductRepository productRepository = new ProductRepository();
+    private Action exitAction = new ExitAction();
+    private Action createUserAction = new CreateProductAction(productRepository);
+    private Action findByIdUserAction = new FindProductByIdAction(productRepository);
+    private List<Action> actions = new ArrayList<>();
 
     public void start() {
+        actions.add(createUserAction);
+        actions.add(findByIdUserAction);
+        actions.add(exitAction);
         Scanner scanner = new Scanner(System.in);
         int response = 0;
-
         while (response >= 0) {
             printMenu();
             try {
-                response = scanner.nextInt();
+                response = scanner.nextInt() - 1;
                 actions.get(response).execute();
             } catch (Exception e) {
-                System.out.println("Error! Please try again.");
+                if (e.getMessage() == null) {
+                    System.out.println("Error! Please try again.");
+                } else {
+                    System.out.println(e.getMessage());
+                }
             }
         }
     }
 
     private void printMenu() {
-        for (int i = 0; i < actions.size(); i++) {
-            System.out.println(i + ". " + actions.get(i));
+        for (int i = 1; i <= actions.size(); i++) {
+            System.out.println(i  + ". " + actions.get(i-1));
         }
     }
 }

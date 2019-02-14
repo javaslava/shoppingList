@@ -7,11 +7,33 @@ public class Product {
 
     private Long id;
     private String name;
-    private BigDecimal price = new BigDecimal("10");
-
-    private Category category;
+    private BigDecimal price;
+    private String category;
     private BigDecimal discount;
     private String description;
+    private BigDecimal minPriceToDiscount = new BigDecimal(20);
+
+    private BigDecimal getMinPriceToDiscount() {
+        return minPriceToDiscount;
+    }
+
+    public int getMinNameLength() {
+        return 3;
+    }
+
+    public int getMaxNameLength() {
+        return 32;
+    }
+    public int getMinDescriptionLength() {
+        return 10;
+    }
+
+    public int getMaxDescriptionLength() {
+        return 50;
+    }
+    public String getMaxDiscountLimit() {
+        return "100";
+    }
 
     public Long getId() {
         return id;
@@ -33,24 +55,39 @@ public class Product {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setPrice(String price) {
+        if (price.equals("")) {
+            price = "0";
+        }
+        if (price.contains(",")) {
+            price = price.replace(',', '.');
+        }
+        this.price = new BigDecimal(price).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public Category getCategory() {
+        return Category.valueOf(category);
+    }
+    public String getCategoryStringName() {
         return category;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategory(String category) {
+        this.category = category.toUpperCase();
     }
 
     public BigDecimal getDiscount() {
         return discount;
     }
 
-    public void setDiscount(BigDecimal discount) {
-        this.discount = discount;
+    public void setDiscount(String discount) {
+        if (discount.equals("") || getPrice().compareTo(getMinPriceToDiscount()) < 0) {
+            discount = "0";
+        }
+        if (discount.contains(",")) {
+            discount = discount.replace(',', '.');
+        }
+        this.discount = new BigDecimal(discount).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public String getDescription() {
@@ -58,9 +95,11 @@ public class Product {
     }
 
     public void setDescription(String description) {
+        if (description.equals("")) {
+            description = "NO DESCRIPTION";
+        }
         this.description = description;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -70,33 +109,23 @@ public class Product {
         return Objects.equals(id, product.id) &&
                 Objects.equals(name, product.name) &&
                 Objects.equals(price, product.price) &&
-                category == product.category &&
+                Objects.equals(category, product.category) &&
                 Objects.equals(discount, product.discount) &&
                 Objects.equals(description, product.description);
     }
 
-    private String checkDiscount() {
-        if (discount != null) {
-            return ", discount=" + discount;
-        } else {
-            return ", NO DISCOUNT/too low price";
-        }
-    }
-
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, category, discount, description);
+        return Objects.hash(getId(), getName(), getPrice(), getCategory(), getDiscount(), getDescription());
     }
 
     @Override
     public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", category=" + category +
-                checkDiscount() +
-                ", description='" + description + '\'' +
-                '}';
+        return "Product{" + "id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", price=" + getPrice() +
+                ", category=" + getCategory() +
+                ", discount=" + getDiscount() +
+                ", description='" + getDescription() + '\'' + '}';
     }
 }

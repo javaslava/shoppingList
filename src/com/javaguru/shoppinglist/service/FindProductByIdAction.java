@@ -1,18 +1,19 @@
 package com.javaguru.shoppinglist.service;
 
 import com.javaguru.shoppinglist.domain.Product;
+import com.javaguru.shoppinglist.repository.ProductRepository;
 import com.javaguru.shoppinglist.service.validation.IdNotNullValidator;
 
 import java.util.Scanner;
 
 public class FindProductByIdAction implements Action {
 
-    private static final String ACTION_NAME = "Find by ID";
+    private static final String ACTION_NAME = "Find product by ID";
 
-    private final ProductService productService;
+   private final ProductRepository productRepository;
 
-    public FindProductByIdAction(ProductService productService) {
-        this.productService = productService;
+    public FindProductByIdAction(ProductRepository repo) {
+        this.productRepository = repo;
     }
 
     @Override
@@ -22,12 +23,11 @@ public class FindProductByIdAction implements Action {
         Long id = scanner.nextLong();
         try{
             new IdNotNullValidator().validate(id);
-            Product response = productService.findBy(id);
+            Product response = productRepository.findBy(id);
             System.out.println("Response: " + response);
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
-
     }
 
     @Override

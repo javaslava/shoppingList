@@ -1,31 +1,26 @@
 package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Category;
+import com.javaguru.shoppinglist.domain.Product;
+import com.javaguru.shoppinglist.repository.ProductRepository;
 
 import java.util.Arrays;
 
-public class CategoryValidator {
-    public void validate(String category) {
+public class CategoryValidator implements ProductValidationRule {
 
-        if (category.length() == 0) {
-            throw new ValidationException("Please, make a choice from: " + Arrays.toString(Category.values()));
-        }
-
-        boolean categoryIsSet = false;
-
-        Category[] categories = Category.values();
-        for (Category element : categories) {
-
+    @Override
+    public void validate(Product product, ProductRepository repo) {
+        Category[] categoriesArray = Category.values();
+        int count = 0;
+        for (Category element : categoriesArray) {
             String categoryName = element.name();
-
-            if (categoryName.equals(category)) {
-                categoryIsSet = true;
+            if (categoryName.equals(product.getCategoryStringName())) {
+                count++;
                 break;
             }
         }
-
-        if (!categoryIsSet) {
-            throw new ValidationException("No such category. Choose one of: " + Arrays.toString(Category.values()));
+        if (count == 0) {
+            throw new ValidationException("Please, make a choice from: " + Arrays.toString(Category.values()));
         }
     }
 }
