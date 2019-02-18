@@ -11,29 +11,6 @@ public class Product {
     private String category;
     private BigDecimal discount;
     private String description;
-    private BigDecimal minPriceToDiscount = new BigDecimal(20);
-
-    private BigDecimal getMinPriceToDiscount() {
-        return minPriceToDiscount;
-    }
-
-    public int getMinNameLength() {
-        return 3;
-    }
-
-    public int getMaxNameLength() {
-        return 32;
-    }
-    public int getMinDescriptionLength() {
-        return 10;
-    }
-
-    public int getMaxDescriptionLength() {
-        return 50;
-    }
-    public String getMaxDiscountLimit() {
-        return "100";
-    }
 
     public Long getId() {
         return id;
@@ -55,19 +32,14 @@ public class Product {
         return price;
     }
 
-    public void setPrice(String price) {
-        if (price.equals("")) {
-            price = "0";
-        }
-        if (price.contains(",")) {
-            price = price.replace(',', '.');
-        }
-        this.price = new BigDecimal(price).setScale(2, BigDecimal.ROUND_HALF_UP);
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Category getCategory() {
         return Category.valueOf(category);
     }
+
     public String getCategoryStringName() {
         return category;
     }
@@ -80,14 +52,8 @@ public class Product {
         return discount;
     }
 
-    public void setDiscount(String discount) {
-        if (discount.equals("") || getPrice().compareTo(getMinPriceToDiscount()) < 0) {
-            discount = "0";
-        }
-        if (discount.contains(",")) {
-            discount = discount.replace(',', '.');
-        }
-        this.discount = new BigDecimal(discount).setScale(2, BigDecimal.ROUND_HALF_UP);
+    public void setDiscount(BigDecimal discount) {
+        this.discount = discount;
     }
 
     public String getDescription() {
@@ -95,9 +61,6 @@ public class Product {
     }
 
     public void setDescription(String description) {
-        if (description.equals("")) {
-            description = "NO DESCRIPTION";
-        }
         this.description = description;
     }
 
@@ -106,12 +69,7 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(id, product.id) &&
-                Objects.equals(name, product.name) &&
-                Objects.equals(price, product.price) &&
-                Objects.equals(category, product.category) &&
-                Objects.equals(discount, product.discount) &&
-                Objects.equals(description, product.description);
+        return Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(price, product.price) && Objects.equals(category, product.category) && Objects.equals(discount, product.discount) && Objects.equals(description, product.description);
     }
 
     @Override
@@ -121,11 +79,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", price=" + getPrice() +
-                ", category=" + getCategory() +
-                ", discount=" + getDiscount() +
-                ", description='" + getDescription() + '\'' + '}';
+        return "Product{" + "id=" + getId() + ", name='" + getName() + '\'' + ", price=" + getPrice() + ", category=" + getCategory() + ", discount=" + getDiscount() + ", description='" + getDescription() + '\'' + '}';
     }
 }

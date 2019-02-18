@@ -2,14 +2,13 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Category;
 import com.javaguru.shoppinglist.domain.Product;
-import com.javaguru.shoppinglist.repository.ProductRepository;
 
 import java.util.Arrays;
 
 public class CategoryValidator implements ProductValidationRule {
 
     @Override
-    public void validate(Product product, ProductRepository repo) {
+    public void validate(Product product) {
         Category[] categoriesArray = Category.values();
         int count = 0;
         for (Category element : categoriesArray) {
