@@ -2,14 +2,19 @@ package com.javaguru.shoppinglist.service;
 
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.repository.ProductRepository;
+import com.javaguru.shoppinglist.service.converting.DescriptionConverter;
+import com.javaguru.shoppinglist.service.converting.DiscountConverter;
+import com.javaguru.shoppinglist.service.converting.PriceConverter;
 import com.javaguru.shoppinglist.service.validation.*;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class CreateProductAction implements Action {
     private static final String ACTION_NAME = "Create Product";
     private ProductRepository productRepository;
     private ProductValidationService validationService = new ProductValidationService();
+    private SameProductNameValidator sameProductNameAnalyzer = new SameProductNameValidator();
 
     public CreateProductAction(ProductRepository repo) {
         this.productRepository = repo;
@@ -30,13 +35,18 @@ public class CreateProductAction implements Action {
         String category = scanner.nextLine().toUpperCase();
 
         Product product = new Product();
+
         product.setName(name);
-        product.setPrice(price);
+        BigDecimal priceValue = new PriceConverter().priceFilter(price);
+        product.setPrice(priceValue);
+        description = new DescriptionConverter().descriptionFilter(description);
         product.setDescription(description);
-        product.setDiscount(discount);
+        BigDecimal discountValue = new DiscountConverter().discountFilter(discount, product.getPrice());
+        product.setDiscount(discountValue);
         product.setCategory(category);
 
-        validationService.validate(product, productRepository);
+        sameProductNameAnalyzer.checkForSameProductName(product, productRepository);
+        validationService.validate(product);
         Long createdProductID = productRepository.create(product);
         System.out.println("Created product ID: " + createdProductID);
     }

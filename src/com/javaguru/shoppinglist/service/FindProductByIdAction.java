@@ -10,7 +10,7 @@ public class FindProductByIdAction implements Action {
 
     private static final String ACTION_NAME = "Find product by ID";
 
-   private final ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public FindProductByIdAction(ProductRepository repo) {
         this.productRepository = repo;
@@ -21,11 +21,11 @@ public class FindProductByIdAction implements Action {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter id: ");
         Long id = scanner.nextLong();
-        try{
+        try {
             new IdNotNullValidator().validate(id);
             Product response = productRepository.findBy(id);
             System.out.println("Response: " + response);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }

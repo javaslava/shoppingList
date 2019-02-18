@@ -43,7 +43,7 @@ public class ConsoleUI {
 
     private void printMenu() {
         for (int i = 1; i <= actions.size(); i++) {
-            System.out.println(i  + ". " + actions.get(i-1));
+            System.out.println(i + ". " + actions.get(i - 1));
         }
     }
 }
