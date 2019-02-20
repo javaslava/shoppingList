@@ -23,4 +23,13 @@ public class ProductRepository {
     public Collection<Product> getDatabaseValues() {
         return database.values();
     }
+
+    public Product getProductByName(String productName) {
+        for (Product element : getDatabaseValues()) {
+            if (element.getName().equals(productName)) {
+                return element;
+            }
+        }
+        return null;
+    }
 }
