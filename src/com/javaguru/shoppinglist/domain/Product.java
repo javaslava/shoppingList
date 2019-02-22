@@ -11,6 +11,7 @@ public class Product {
     private String category;
     private BigDecimal discount;
     private String description;
+    private BigDecimal actualPrice;
 
     public Long getId() {
         return id;
@@ -56,6 +57,14 @@ public class Product {
         this.discount = discount;
     }
 
+    public BigDecimal getActualPrice() {
+        return actualPrice;
+    }
+
+    public void setActualPrice(BigDecimal actualPrice) {
+        this.actualPrice = actualPrice;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -69,7 +78,9 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(price, product.price) && Objects.equals(category, product.category) && Objects.equals(discount, product.discount) && Objects.equals(description, product.description);
+        return Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(price,
+                product.price) && Objects.equals(category, product.category) && Objects.equals(discount,
+                product.discount) && Objects.equals(description, product.description);
     }
 
     @Override
@@ -79,6 +90,14 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" + "id=" + getId() + ", name='" + getName() + '\'' + ", price=" + getPrice() + ", category=" + getCategory() + ", discount=" + getDiscount() + ", description='" + getDescription() + '\'' + '}';
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", category='" + category + '\'' +
+                ", discount=" + discount +
+                ", description='" + description + '\'' +
+                ", actualPrice=" + actualPrice +
+                '}';
     }
 }

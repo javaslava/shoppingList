@@ -5,6 +5,7 @@ import com.javaguru.shoppinglist.domain.Product;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class ProductRepository {
     private Map<Long, Product> database = new HashMap<>();
@@ -22,5 +23,9 @@ public class ProductRepository {
 
     public Collection<Product> getDatabaseValues() {
         return database.values();
+    }
+
+    public Optional<Product> getProductByName(String productName) {
+        return database.values().stream().filter((p) -> p.getName().equals(productName)).findFirst();
     }
 }

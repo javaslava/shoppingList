@@ -2,6 +2,7 @@ package com.javaguru.shoppinglist.service;
 
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.repository.ProductRepository;
+import com.javaguru.shoppinglist.service.converting.ActualPriceConverter;
 import com.javaguru.shoppinglist.service.converting.DescriptionConverter;
 import com.javaguru.shoppinglist.service.converting.DiscountConverter;
 import com.javaguru.shoppinglist.service.converting.PriceConverter;
@@ -14,7 +15,7 @@ public class CreateProductAction implements Action {
     private static final String ACTION_NAME = "Create Product";
     private ProductRepository productRepository;
     private ProductValidationService validationService = new ProductValidationService();
-    private SameProductNameValidator sameProductNameAnalyzer = new SameProductNameValidator();
+    private SameProductNameValidator productNameAnalyzer = new SameProductNameValidator();
 
     public CreateProductAction(ProductRepository repo) {
         this.productRepository = repo;
@@ -43,9 +44,11 @@ public class CreateProductAction implements Action {
         product.setDescription(description);
         BigDecimal discountValue = new DiscountConverter().discountFilter(discount, product.getPrice());
         product.setDiscount(discountValue);
+        BigDecimal actualPrice = new ActualPriceConverter().actualPriceCalculator(product.getPrice(), product.getDiscount());
+        product.setActualPrice(actualPrice);
         product.setCategory(category);
 
-        sameProductNameAnalyzer.checkForSameProductName(product, productRepository);
+        productNameAnalyzer.checkForSameProductName(product, productRepository);
         validationService.validate(product);
         Long createdProductID = productRepository.create(product);
         System.out.println("Created product ID: " + createdProductID);

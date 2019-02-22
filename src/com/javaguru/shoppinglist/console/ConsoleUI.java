@@ -1,5 +1,6 @@
 package com.javaguru.shoppinglist.console;
 
+import com.javaguru.shoppinglist.repository.CartRepository;
 import com.javaguru.shoppinglist.repository.ProductRepository;
 import com.javaguru.shoppinglist.service.*;
 
@@ -10,14 +11,20 @@ import java.util.Scanner;
 public class ConsoleUI {
 
     private ProductRepository productRepository = new ProductRepository();
+    private CartRepository shoppingCartRepository = new CartRepository();
+
     private Action exitAction = new ExitAction();
-    private Action createUserAction = new CreateProductAction(productRepository);
+    private Action createProductUserAction = new CreateProductAction(productRepository);
     private Action findByIdUserAction = new FindProductByIdAction(productRepository);
+    private Action createShoppingCartUserAction = new CreateCartAction(shoppingCartRepository);
+    private Action manageShoppingCartUserAction = new ManageShoppingCartAction(shoppingCartRepository, productRepository);
     private List<Action> actions = new ArrayList<>();
 
     public void start() {
-        actions.add(createUserAction);
+        actions.add(createProductUserAction);
         actions.add(findByIdUserAction);
+        actions.add(createShoppingCartUserAction);
+        actions.add(manageShoppingCartUserAction);
         actions.add(exitAction);
         Scanner scanner = new Scanner(System.in);
         int response = 0;
@@ -38,7 +45,7 @@ public class ConsoleUI {
 
     private void printMenu() {
         for (int i = 1; i <= actions.size(); i++) {
-            System.out.println(i + ". " + actions.get(i - 1));
+            System.out.println(i + ". " + actions.get(i-1));
         }
     }
 }
