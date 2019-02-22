@@ -11,7 +11,6 @@ public class CartValidationService {
 
     public CartValidationService() {
         validationRules.add(new CartNameLengthValidator());
-
     }
 
     public void validate(ShoppingCart cart) {

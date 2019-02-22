@@ -2,10 +2,12 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Product;
 
+import java.util.Optional;
+
 public class ProductNotNullValidator {
-    public void validate(Product product) {
-        if (product == null) {
-            throw new NullPointerException("No such name product");
+    public void validate(Optional<Product> product) {
+        if (!product.isPresent()) {
+            throw new ValidationException("No such name product");
         }
     }
 }

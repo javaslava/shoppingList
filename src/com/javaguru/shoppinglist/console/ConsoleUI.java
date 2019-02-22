@@ -43,15 +43,8 @@ public class ConsoleUI {
         }
     }
 
-    private int getIndexOfCartManager() {
-        return actions.indexOf(manageShoppingCartUserAction);
-    }
-
     private void printMenu() {
         for (int i = 1; i <= actions.size(); i++) {
-            if (i == getIndexOfCartManager()+1 && shoppingCartRepository.getShoppingCartRepoSize() == 0) {
-                continue;
-            }
             System.out.println(i + ". " + actions.get(i-1));
         }
     }

@@ -1,15 +1,14 @@
 package com.javaguru.shoppinglist.service;
 
-import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.repository.CartRepository;
 import com.javaguru.shoppinglist.repository.ProductRepository;
-import com.javaguru.shoppinglist.service.validation.ProductNotNullValidator;
+import com.javaguru.shoppinglist.service.validation.CartManagerValidator;
+import com.javaguru.shoppinglist.service.validation.CartRepositorySizeValidator;
 
-import java.math.BigDecimal;
-import java.util.Scanner;
+import java.util.*;
 
 public class ManageShoppingCartAction implements Action {
-    private static final String ACTION_NAME = "Manage shopping cart";
+    private static final String MANAGE_CART_ACTION = "Manage shopping cart";
     private CartRepository shoppingCartRepository;
     private ProductRepository productRepository;
 
@@ -18,56 +17,36 @@ public class ManageShoppingCartAction implements Action {
         this.productRepository = productRepository;
     }
 
+    private Map<String, CartManager> cartManager = new LinkedHashMap<>();
+
     @Override
     public void execute() {
+        cartManager.put("1. Add product to ", new CartAddProductManager(productRepository));
+        cartManager.put("2. Delete product from ", new CartDeleteProductManager());
+        cartManager.put("3. Get list of products in ", new CartPrintContentManager());
+        cartManager.put("4. Get total actual price of products in ", new CartTotalPriceManager());
+        cartManager.put("5. Remove all from ", new CartRemoveContentManager());
+        cartManager.put("6. Delete ", new CartDeleteManager());
+
+        String cartName = chooseCartByName();
+
+        int response = 1;
+        while (response > 0 && response < cartManager.size()) {
+            cartManager.keySet().stream().forEach(element -> System.out.println(element + " '" + cartName + "'"));
+            response = userNumberInput();
+            new CartManagerValidator().validate(cartManager, response);
+            cartManager.values().stream().skip(response - 1).findFirst().get().manageCart(cartName,
+                    shoppingCartRepository);
+        }
+    }
+
+    private String chooseCartByName() {
         String cartName;
-        do {
+        do {new CartRepositorySizeValidator().validate(shoppingCartRepository.getShoppingCartRepoSize());
             System.out.println("Choose shopping cart to manage: " + shoppingCartRepository.getShoppingCartsNames());
             cartName = userStringInput();
         } while (!shoppingCartRepository.checkForCartByName(cartName));
-
-
-        int response = 1;
-        while (response > 0 && response < 6) {
-            System.out.println("1. Add product to shopping cart");
-            System.out.println("2. Delete product from shopping cart");
-            System.out.println("3. Get a list of products in the cart");
-            System.out.println("4. Get total actual price of products in the cart");
-            System.out.println("5. Remove all cart content");
-            System.out.println("6. Delete shopping cart");
-            System.out.println("7. Exit to main menu");
-            response = userNumberInput();
-
-            switch (response) {
-                case 1:
-                    System.out.println("Enter product name to add it to cart:");
-                    Product productToAdd = productRepository.getProductByName(userStringInput());
-                    new ProductNotNullValidator().validate(productToAdd);
-                    shoppingCartRepository.addProductToCart(cartName, productToAdd);
-                    break;
-                case 2:
-                    System.out.println("Enter product name to remove it from cart:");
-                    Product productToDelete = shoppingCartRepository.getProductByName(cartName, userStringInput());
-                    new ProductNotNullValidator().validate(productToDelete);
-                    shoppingCartRepository.deleteProductFromCart(cartName, productToDelete);
-                    break;
-                case 3:
-                    shoppingCartRepository.printCartContent(cartName);
-                    break;
-                case 4:
-                    BigDecimal totalCartContentPrice = shoppingCartRepository.getTotalCartPrice(cartName);
-                    System.out.println("Total actual price of cart content: " + totalCartContentPrice);
-                    break;
-                case 5:
-                    shoppingCartRepository.removeCartContent(cartName);
-                    break;
-                case 6:
-                    shoppingCartRepository.deleteCartByName(cartName);
-                    break;
-                case 7:
-                    break;
-            }
-        }
+        return cartName;
     }
 
     private String userStringInput() {
@@ -82,6 +61,6 @@ public class ManageShoppingCartAction implements Action {
 
     @Override
     public String toString() {
-        return ACTION_NAME;
+        return MANAGE_CART_ACTION;
     }
 }

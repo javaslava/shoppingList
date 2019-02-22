@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class CreateCartAction implements Action {
 
-    private static final String ACTION_NAME = "Create Shopping Cart";
+    private static final String CREATE_CART_ACTION = "Create Shopping Cart";
 
     private CartRepository cartRepository;
     private CartValidationService validationService = new CartValidationService();
@@ -34,6 +34,6 @@ public class CreateCartAction implements Action {
 
     @Override
     public String toString() {
-        return ACTION_NAME;
+        return CREATE_CART_ACTION;
     }
 }

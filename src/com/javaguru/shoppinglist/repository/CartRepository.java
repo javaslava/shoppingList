@@ -4,6 +4,7 @@ import com.javaguru.shoppinglist.domain.Product;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CartRepository {
     private Map<String, List<Product>> shoppingCarts = new HashMap<>();
@@ -24,8 +25,9 @@ public class CartRepository {
         return shoppingCarts.size();
     }
 
-    public Set<String> getShoppingCartsNames() {
-        return shoppingCarts.keySet();
+    public String getShoppingCartsNames() {
+        return shoppingCarts.keySet().stream()
+                .map(String::valueOf).collect(Collectors.joining(", "));
     }
 
     public void deleteCartByName(String cartName) {
@@ -36,13 +38,9 @@ public class CartRepository {
         shoppingCarts.get(cartName).add(product);
     }
 
-    public Product getProductByName(String cartName, String productName) {
-        for (Product element : shoppingCarts.get(cartName)) {
-            if (element.getName().equals(productName)) {
-                return element;
-            }
-        }
-        return null;
+    public Optional<Product> getProductByName(String cartName, String productName) {
+        return shoppingCarts.get(cartName).stream()
+                .filter((p) -> p.getName().equals(productName)).findFirst();
     }
 
     public void deleteProductFromCart(String cartName, Product product) {
@@ -50,16 +48,13 @@ public class CartRepository {
     }
 
     public void printCartContent(String cartName) {
-        for (Product element : shoppingCarts.get(cartName)) {
-            System.out.println(element.getName() + ": " + element.getDescription() + " Price: " + element.getPrice() + " Discount: " + element.getDiscount() + " Actual price: " + element.getActualPrice());
-        }
+        shoppingCarts.get(cartName).stream()
+                .forEach(element -> System.out.println(element));
     }
 
     public BigDecimal getTotalCartPrice(String cartName) {
-        BigDecimal totalPrice = new BigDecimal(0);
-        for (Product element : shoppingCarts.get(cartName)) {
-            totalPrice = totalPrice.add(element.getActualPrice());
-        }
-        return totalPrice;
+        return shoppingCarts.get(cartName).stream()
+                .map(Product::getActualPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

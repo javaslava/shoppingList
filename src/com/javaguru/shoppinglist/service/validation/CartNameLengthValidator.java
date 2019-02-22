@@ -11,7 +11,9 @@ public class CartNameLengthValidator implements CartValidationRule {
     public void validate(ShoppingCart cart) {
         checkNotNull(cart);
         if (cart.getName().length() < MIN_NAME_LENGTH || cart.getName().length() > MAX_NAME_LENGTH) {
-            throw new ValidationException("The name's length have to be in range " + MIN_NAME_LENGTH + " - " + MAX_NAME_LENGTH + " symbols");
+            throw new ValidationException("The name's length have to be in " +
+                    "range " + MIN_NAME_LENGTH + " - " + MAX_NAME_LENGTH + " " +
+                    "symbols");
         }
     }
 }
