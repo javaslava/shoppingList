@@ -2,7 +2,7 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Product;
 
-public class DescriptionValidator implements ProductValidationRule {
+public class ProductDescriptionValidator implements ProductValidationRule {
 
     private final int MIN_DESCRIPTION_LENGTH = 10;
     private final int MAX_DESCRIPTION_LENGTH = 50;

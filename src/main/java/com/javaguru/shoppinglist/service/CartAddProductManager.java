@@ -10,16 +10,18 @@ import java.util.Optional;
 public class CartAddProductManager implements CartManager {
 
     private final ProductRepository productRepository;
+    private final CartRepository shoppingCartRepo;
 
-    CartAddProductManager(ProductRepository productRepository) {
+    public CartAddProductManager(ProductRepository productRepository, CartRepository shoppingCartRepo) {
         this.productRepository = productRepository;
+        this.shoppingCartRepo = shoppingCartRepo;
     }
 
     @Override
-    public void manageCart(String cartName, CartRepository shoppingCartRepository) {
+    public void manageCart(String cartName) {
         System.out.println("Enter product name to add to " + cartName);
         Optional<Product> productToAdd = productRepository.getProductByName(userStringInput());
         new ProductNotNullValidator().validate(productToAdd);
-        shoppingCartRepository.addProductToCart(cartName, productToAdd.get());
+        shoppingCartRepo.addProductToCart(cartName, productToAdd.get());
     }
 }

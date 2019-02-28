@@ -8,11 +8,17 @@ import java.util.Optional;
 
 public class CartDeleteProductManager implements CartManager {
 
+    private final CartRepository shoppingCartRepo;
+
+    public CartDeleteProductManager(CartRepository shoppingCartRepo) {
+        this.shoppingCartRepo = shoppingCartRepo;
+    }
+
     @Override
-    public void manageCart(String cartName, CartRepository shoppingCartRepository) {
+    public void manageCart(String cartName) {
         System.out.println("Enter product name to remove from " + cartName);
-        Optional<Product> productToDelete = shoppingCartRepository.getProductByName(cartName, userStringInput());
+        Optional<Product> productToDelete = shoppingCartRepo.getProductByName(cartName, userStringInput());
         new ProductNotNullValidator().validate(productToDelete);
-        shoppingCartRepository.deleteProductFromCart(cartName, productToDelete.get());
+        shoppingCartRepo.deleteProductFromCart(cartName, productToDelete.get());
     }
 }

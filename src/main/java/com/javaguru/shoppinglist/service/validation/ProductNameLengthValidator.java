@@ -2,7 +2,7 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Product;
 
-public class NameLengthValidator implements ProductValidationRule {
+public class ProductNameLengthValidator implements ProductValidationRule {
 
     private final int MIN_NAME_LENGTH = 3;
     private final int MAX_NAME_LENGTH = 32;

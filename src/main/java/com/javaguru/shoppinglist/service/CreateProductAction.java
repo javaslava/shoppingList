@@ -15,7 +15,6 @@ public class CreateProductAction implements Action {
     private static final String ACTION_NAME = "Create Product";
     private ProductRepository productRepository;
     private ProductValidationService validationService = new ProductValidationService();
-    private SameProductNameValidator productNameAnalyzer = new SameProductNameValidator();
 
     public CreateProductAction(ProductRepository repo) {
         this.productRepository = repo;
@@ -48,7 +47,7 @@ public class CreateProductAction implements Action {
         product.setActualPrice(actualPrice);
         product.setCategory(category);
 
-        productNameAnalyzer.checkForSameProductName(product, productRepository);
+        new SameProductNameValidator(productRepository).checkForSameProductName(product);
         validationService.validate(product);
         Long createdProductID = productRepository.create(product);
         System.out.println("Created product ID: " + createdProductID);

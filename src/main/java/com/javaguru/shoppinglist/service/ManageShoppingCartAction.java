@@ -1,5 +1,6 @@
 package com.javaguru.shoppinglist.service;
 
+import com.javaguru.shoppinglist.repository.CartManagerRepository;
 import com.javaguru.shoppinglist.repository.CartRepository;
 import com.javaguru.shoppinglist.repository.ProductRepository;
 import com.javaguru.shoppinglist.service.validation.CartManagerValidator;
@@ -17,26 +18,16 @@ public class ManageShoppingCartAction implements Action {
         this.productRepository = productRepository;
     }
 
-    private Map<String, CartManager> cartManager = new LinkedHashMap<>();
-
     @Override
     public void execute() {
-        cartManager.put("1. Add product to ", new CartAddProductManager(productRepository));
-        cartManager.put("2. Delete product from ", new CartDeleteProductManager());
-        cartManager.put("3. Get list of products in ", new CartPrintContentManager());
-        cartManager.put("4. Get total actual price of products in ", new CartTotalPriceManager());
-        cartManager.put("5. Remove all from ", new CartRemoveContentManager());
-        cartManager.put("6. Delete ", new CartDeleteManager());
-
+        CartManagerRepository cartManager = new CartManagerRepository(productRepository, shoppingCartRepository);
         String cartName = chooseCartByName();
-
         int response = 1;
-        while (response > 0 && response < cartManager.size()) {
-            cartManager.keySet().stream().forEach(element -> System.out.println(element + " '" + cartName + "'"));
+        while (response > 0 && response < cartManager.getCartManagerSize()) {
+            cartManager.printCartManagerMenu(cartName);
             response = userNumberInput();
-            new CartManagerValidator().validate(cartManager, response);
-            cartManager.values().stream().skip(response - 1).findFirst().get().manageCart(cartName,
-                    shoppingCartRepository);
+            new CartManagerValidator(cartManager).validate(response);
+            cartManager.runCartManagerMenuChoice(response, cartName);
         }
     }
 

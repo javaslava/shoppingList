@@ -4,7 +4,7 @@ import com.javaguru.shoppinglist.domain.Product;
 
 import java.math.BigDecimal;
 
-public class DiscountValidator implements ProductValidationRule {
+public class ProductDiscountValidator implements ProductValidationRule {
     private final BigDecimal MAX_DISCOUNT_LIMIT = new BigDecimal("100");
 
     @Override

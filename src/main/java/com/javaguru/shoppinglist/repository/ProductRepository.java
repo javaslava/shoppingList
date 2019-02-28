@@ -28,4 +28,8 @@ public class ProductRepository {
     public Optional<Product> getProductByName(String productName) {
         return database.values().stream().filter((p) -> p.getName().equals(productName)).findFirst();
     }
+
+    public boolean existsByName(Product product){
+       return database.values().stream().anyMatch(p -> p.getName().compareToIgnoreCase(product.getName()) == 0);
+    }
 }

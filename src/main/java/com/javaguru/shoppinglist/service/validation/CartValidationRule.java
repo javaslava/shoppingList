@@ -8,7 +8,7 @@ public interface CartValidationRule {
 
     default void checkNotNull(ShoppingCart cart) {
         if (cart == null) {
-            throw new ValidationException("Product must be not null");
+            throw new ValidationException("Cart must be not null");
         }
     }
 }

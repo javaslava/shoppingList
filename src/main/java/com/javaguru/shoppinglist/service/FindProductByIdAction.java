@@ -2,7 +2,7 @@ package com.javaguru.shoppinglist.service;
 
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.repository.ProductRepository;
-import com.javaguru.shoppinglist.service.validation.IdNotNullValidator;
+import com.javaguru.shoppinglist.service.validation.ProductIdNotNullValidator;
 
 import java.util.Scanner;
 
@@ -22,7 +22,7 @@ public class FindProductByIdAction implements Action {
         System.out.println("Enter id: ");
         Long id = scanner.nextLong();
         try {
-            new IdNotNullValidator().validate(id);
+            new ProductIdNotNullValidator().validate(id);
             Product response = productRepository.findBy(id);
             System.out.println("Response: " + response);
         } catch (Exception e) {
