@@ -2,9 +2,7 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.repository.ProductRepository;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -12,25 +10,24 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SameProductNameValidatorTest {
+public class ProductUniqueNameValidatorTest {
     @Mock
     private ProductRepository repo;
 
     @InjectMocks
-    private SameProductNameValidator victim;
-    @Rule
-    public final ExpectedException expectation = ExpectedException.none();
+    private ProductUniqueNameValidator victim;
 
     @Test
     public void shouldThrowExceptionRepoHasSameProductName() {
         Product fake = createFake();
         when(repo.existsByName(fake)).thenReturn(true);
-        expectation.expect(ValidationException.class);
-        expectation.expectMessage("Database contains the product with the same name.");
-        victim.checkForSameProductName(fake);
+        assertThatThrownBy(() -> victim.validate(createFake()))
+                .isInstanceOf(ValidationException.class)
+                .hasMessage("Database contains the product with the same name.");
     }
 
     private Product createFake() {

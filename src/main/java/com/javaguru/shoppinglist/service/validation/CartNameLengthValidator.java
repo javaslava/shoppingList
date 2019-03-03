@@ -4,7 +4,7 @@ import com.javaguru.shoppinglist.domain.ShoppingCart;
 
 public class CartNameLengthValidator implements CartValidationRule {
 
-    private final int MIN_NAME_LENGTH = 2;
+    private final int MIN_NAME_LENGTH = 3;
     private final int MAX_NAME_LENGTH = 15;
 
     @Override

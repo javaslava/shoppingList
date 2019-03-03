@@ -16,9 +16,9 @@ public class ProductNotNullValidatorTest {
     @Test
     public void shouldThrowException() {
         Product fake = null;
-        Optional<Product> opt = Optional.ofNullable(fake);
+        Optional<Product> optional = Optional.ofNullable(fake);
         expectation.expect(ValidationException.class);
         expectation.expectMessage("No such named product");
-        victim.validate(opt);
+        victim.validate(optional);
     }
 }

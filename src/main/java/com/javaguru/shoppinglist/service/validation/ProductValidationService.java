@@ -7,15 +7,10 @@ import java.util.Set;
 
 public class ProductValidationService {
 
-    private Set<ProductValidationRule> validationRules = new LinkedHashSet<>();
+    private Set<ProductValidationRule> validationRules;
 
-    public ProductValidationService() {
-        validationRules.add(new ProductNameNotNullValidator());
-        validationRules.add(new ProductNameLengthValidator());
-        validationRules.add(new ProductPriceValidator());
-        validationRules.add(new ProductDiscountValidator());
-        validationRules.add(new ProductDescriptionValidator());
-        validationRules.add(new ProductCategoryNameValidator());
+    public ProductValidationService(Set<ProductValidationRule> validationRules) {
+        this.validationRules = validationRules;
     }
 
     public void validate(Product product) {

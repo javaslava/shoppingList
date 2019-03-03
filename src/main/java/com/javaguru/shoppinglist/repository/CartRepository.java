@@ -1,6 +1,7 @@
 package com.javaguru.shoppinglist.repository;
 
 import com.javaguru.shoppinglist.domain.Product;
+import com.javaguru.shoppinglist.domain.ShoppingCart;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -9,8 +10,9 @@ import java.util.stream.Collectors;
 public class CartRepository {
     private Map<String, List<Product>> shoppingCarts = new HashMap<>();
 
-    public void create(String cartName) {
-        shoppingCarts.put(cartName, new ArrayList<>());
+    public ShoppingCart insert(ShoppingCart cart) {
+        shoppingCarts.put(cart.getName(), new ArrayList<>());
+        return cart;
     }
 
     public boolean checkForCartByName(String cartName) {

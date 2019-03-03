@@ -41,10 +41,6 @@ public class Product {
         return Category.valueOf(category);
     }
 
-    public String getCategoryStringName() {
-        return category;
-    }
-
     public void setCategory(String category) {
         this.category = category.toUpperCase();
     }

@@ -7,10 +7,10 @@ import java.util.Set;
 
 public class CartValidationService {
 
-    private Set<CartValidationRule> validationRules = new HashSet<>();
+    private Set<CartValidationRule> validationRules;
 
-    public CartValidationService() {
-        validationRules.add(new CartNameLengthValidator());
+    public CartValidationService(Set<CartValidationRule> validationRules) {
+        this.validationRules = validationRules;
     }
 
     public void validate(ShoppingCart cart) {

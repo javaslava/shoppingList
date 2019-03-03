@@ -13,13 +13,13 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SameCartNameValidatorTest {
+public class CartUniqueNameValidatorTest {
 
     @Mock
     private CartRepository repo;
 
     @InjectMocks
-    private SameCartNameValidator victim;
+    private CartUniqueNameValidator victim;
 
     @Rule
     public final ExpectedException expectation = ExpectedException.none();
@@ -30,7 +30,7 @@ public class SameCartNameValidatorTest {
         when(repo.checkForCartByName(cart.getName())).thenReturn(true);
         expectation.expect(ValidationException.class);
         expectation.expectMessage("Database contains the cart with the same name.");
-        victim.checkForSameCartName(cart, repo);
+        victim.validate(cart);
     }
 
     private ShoppingCart createFake(String name) {

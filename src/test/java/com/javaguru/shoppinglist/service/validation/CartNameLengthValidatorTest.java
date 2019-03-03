@@ -17,7 +17,7 @@ public class CartNameLengthValidatorTest {
     public void shouldThrowExceptionTooShortName() {
         fake = createFake("J");
         expectation.expect(ValidationException.class);
-        expectation.expectMessage("The name's length have to be in range 2 - 15 symbols");
+        expectation.expectMessage("The name's length have to be in range 3 - 15 symbols");
         victim.validate(fake);
     }
 
@@ -25,7 +25,7 @@ public class CartNameLengthValidatorTest {
     public void shouldThrowExceptionTooLongName() {
         fake = createFake("JavaCart for knowledge");
         expectation.expect(ValidationException.class);
-        expectation.expectMessage("The name's length have to be in range 2 - 15 symbols");
+        expectation.expectMessage("The name's length have to be in range 3 - 15 symbols");
         victim.validate(fake);
     }
 

@@ -1,38 +1,29 @@
 package com.javaguru.shoppinglist.console;
 
-import com.javaguru.shoppinglist.repository.CartRepository;
-import com.javaguru.shoppinglist.repository.ProductRepository;
+import com.javaguru.shoppinglist.repository.ConsoleUIMenuRepository;
 import com.javaguru.shoppinglist.service.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleUI {
 
-    private ProductRepository productRepository = new ProductRepository();
-    private CartRepository shoppingCartRepository = new CartRepository();
+    private final ProductService productService;
+    private final CartService cartService;
 
-    private Action exitAction = new ExitAction();
-    private Action createProductUserAction = new CreateProductAction(productRepository);
-    private Action findByIdUserAction = new FindProductByIdAction(productRepository);
-    private Action createShoppingCartUserAction = new CreateCartAction(shoppingCartRepository);
-    private Action manageShoppingCartUserAction = new ManageShoppingCartAction(shoppingCartRepository, productRepository);
-    private List<Action> actions = new ArrayList<>();
+    public ConsoleUI(ProductService productService, CartService cartService) {
+        this.productService = productService;
+        this.cartService = cartService;
+    }
 
     public void start() {
-        actions.add(createProductUserAction);
-        actions.add(findByIdUserAction);
-        actions.add(createShoppingCartUserAction);
-        actions.add(manageShoppingCartUserAction);
-        actions.add(exitAction);
+        ConsoleUIMenuRepository consoleMenu = new ConsoleUIMenuRepository(productService, cartService);
         Scanner scanner = new Scanner(System.in);
         int response = 0;
         while (response >= 0) {
-            printMenu();
+            printMenu(consoleMenu);
             try {
                 response = scanner.nextInt() - 1;
-                actions.get(response).execute();
+                consoleMenu.chooseAction(response).execute();
             } catch (Exception e) {
                 if (e.getMessage() == null) {
                     System.out.println("Error! Please try again.");
@@ -43,9 +34,9 @@ public class ConsoleUI {
         }
     }
 
-    private void printMenu() {
-        for (int i = 1; i <= actions.size(); i++) {
-            System.out.println(i + ". " + actions.get(i-1));
+    private void printMenu(ConsoleUIMenuRepository consoleMenu) {
+        for (int i = 1; i <= consoleMenu.getConsoleMenuSize(); i++) {
+            System.out.println(i + ". " + consoleMenu.getActionName(i - 1));
         }
     }
 }

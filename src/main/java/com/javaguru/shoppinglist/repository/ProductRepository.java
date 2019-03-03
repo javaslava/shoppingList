@@ -5,28 +5,24 @@ import com.javaguru.shoppinglist.domain.Product;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class ProductRepository {
     private Map<Long, Product> database = new HashMap<>();
     private Long productIdSequence = 0L;
 
-    public Product findBy(Long id) {
+    public Product findProductById(Long id) {
         return database.get(id);
     }
 
-    public Long create(Product product) {
+    public Product insert(Product product) {
         product.setId(productIdSequence);
         database.put(productIdSequence, product);
-        return productIdSequence++;
+        productIdSequence++;
+        return product;
     }
 
     public Collection<Product> getDatabaseValues() {
         return database.values();
-    }
-
-    public Optional<Product> getProductByName(String productName) {
-        return database.values().stream().filter((p) -> p.getName().equals(productName)).findFirst();
     }
 
     public boolean existsByName(Product product){

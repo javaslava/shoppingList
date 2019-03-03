@@ -1,26 +1,26 @@
-package com.javaguru.shoppinglist.service;
+package com.javaguru.shoppinglist.console;
 
 import com.javaguru.shoppinglist.repository.CartManagerRepository;
-import com.javaguru.shoppinglist.repository.CartRepository;
-import com.javaguru.shoppinglist.repository.ProductRepository;
+import com.javaguru.shoppinglist.service.CartService;
+import com.javaguru.shoppinglist.service.ProductService;
 import com.javaguru.shoppinglist.service.validation.CartManagerValidator;
-import com.javaguru.shoppinglist.service.validation.CartRepositorySizeValidator;
 
 import java.util.*;
 
 public class ManageShoppingCartAction implements Action {
     private static final String MANAGE_CART_ACTION = "Manage shopping cart";
-    private CartRepository shoppingCartRepository;
-    private ProductRepository productRepository;
 
-    public ManageShoppingCartAction(CartRepository cartRepository, ProductRepository productRepository) {
-        this.shoppingCartRepository = cartRepository;
-        this.productRepository = productRepository;
+    private final CartService cartService;
+    private final ProductService productService;
+
+    public ManageShoppingCartAction(CartService cartService, ProductService productService) {
+        this.cartService = cartService;
+        this.productService = productService;
     }
 
     @Override
     public void execute() {
-        CartManagerRepository cartManager = new CartManagerRepository(productRepository, shoppingCartRepository);
+        CartManagerRepository cartManager = new CartManagerRepository(productService, cartService);
         String cartName = chooseCartByName();
         int response = 1;
         while (response > 0 && response < cartManager.getCartManagerSize()) {
@@ -33,10 +33,11 @@ public class ManageShoppingCartAction implements Action {
 
     private String chooseCartByName() {
         String cartName;
-        do {new CartRepositorySizeValidator().validate(shoppingCartRepository.getShoppingCartRepoSize());
-            System.out.println("Choose shopping cart to manage: " + shoppingCartRepository.getShoppingCartsNames());
+        do {
+            cartService.checkCartRepoNotEmpty();
+            System.out.println("Choose shopping cart to manage: " + cartService.getShoppingCartsNames());
             cartName = userStringInput();
-        } while (!shoppingCartRepository.checkForCartByName(cartName));
+        } while (!cartService.checkForCartByName(cartName));
         return cartName;
     }
 
