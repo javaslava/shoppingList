@@ -10,7 +10,8 @@ public class ProductDescriptionValidator implements ProductValidationRule {
     @Override
     public void validate(Product product) {
         if (product.getDescription().length() < MIN_DESCRIPTION_LENGTH || product.getDescription().length() > MAX_DESCRIPTION_LENGTH) {
-            throw new ValidationException("Description's length have to be in range " + MIN_DESCRIPTION_LENGTH + " - " + MAX_DESCRIPTION_LENGTH + " symbols");
+            throw new ValidationException("Description's length have to be in range " + MIN_DESCRIPTION_LENGTH + " - "
+                    + MAX_DESCRIPTION_LENGTH + " symbols");
         }
     }
 }

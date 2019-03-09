@@ -2,7 +2,7 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.repository.CartManagerRepository;
 
-public class CartManagerValidator {
+public class CartManagerValidator implements CartManagerValidationRule {
 
     private CartManagerRepository cartManager;
 
@@ -10,6 +10,7 @@ public class CartManagerValidator {
         this.cartManager = cartManager;
     }
 
+    @Override
     public void validate(int response) {
         if (response < 1 || response > cartManager.getCartManagerSize()) {
             throw new ValidationException("Not available choice ");

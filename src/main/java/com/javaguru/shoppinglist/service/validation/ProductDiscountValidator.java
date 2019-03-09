@@ -2,6 +2,7 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Product;
 
+
 import java.math.BigDecimal;
 
 public class ProductDiscountValidator implements ProductValidationRule {

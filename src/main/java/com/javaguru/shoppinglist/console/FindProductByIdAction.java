@@ -7,9 +7,8 @@ import com.javaguru.shoppinglist.service.ProductService;
 import java.util.Scanner;
 
 public class FindProductByIdAction implements Action {
-
+    private final Scanner scanner = new Scanner(System.in);
     private static final String ACTION_NAME = "Find product by ID";
-
     private final ProductService productService;
 
     public FindProductByIdAction(ProductService productService) {
@@ -18,7 +17,6 @@ public class FindProductByIdAction implements Action {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter product id: ");
         Long id = scanner.nextLong();
         Product response = productService.findProductById(id);

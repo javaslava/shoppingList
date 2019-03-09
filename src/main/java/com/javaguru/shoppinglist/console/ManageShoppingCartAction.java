@@ -1,33 +1,28 @@
 package com.javaguru.shoppinglist.console;
 
-import com.javaguru.shoppinglist.repository.CartManagerRepository;
+import com.javaguru.shoppinglist.service.CartManagerService;
 import com.javaguru.shoppinglist.service.CartService;
-import com.javaguru.shoppinglist.service.ProductService;
-import com.javaguru.shoppinglist.service.validation.CartManagerValidator;
 
 import java.util.*;
 
 public class ManageShoppingCartAction implements Action {
     private static final String MANAGE_CART_ACTION = "Manage shopping cart";
-
     private final CartService cartService;
-    private final ProductService productService;
+    private final CartManagerService managerService;
 
-    public ManageShoppingCartAction(CartService cartService, ProductService productService) {
+    public ManageShoppingCartAction(CartService cartService, CartManagerService cartManagerService) {
         this.cartService = cartService;
-        this.productService = productService;
+        this.managerService = cartManagerService;
     }
 
     @Override
     public void execute() {
-        CartManagerRepository cartManager = new CartManagerRepository(productService, cartService);
         String cartName = chooseCartByName();
         int response = 1;
-        while (response > 0 && response < cartManager.getCartManagerSize()) {
-            cartManager.printCartManagerMenu(cartName);
+        while (response > 0 && response < managerService.getCartManagerSize()) {
+            managerService.printCartManagerMenu(cartName);
             response = userNumberInput();
-            new CartManagerValidator(cartManager).validate(response);
-            cartManager.runCartManagerMenuChoice(response, cartName);
+            managerService.runCartManagerMenuChoice(response, cartName);
         }
     }
 

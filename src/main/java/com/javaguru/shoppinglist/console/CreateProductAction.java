@@ -5,8 +5,8 @@ import com.javaguru.shoppinglist.service.ProductService;
 import java.util.Scanner;
 
 public class CreateProductAction implements Action {
+    private final Scanner scanner = new Scanner(System.in);
     private static final String ACTION_NAME = "Create Product";
-
     private final ProductService productService;
 
     public CreateProductAction(ProductService productService) {
@@ -15,7 +15,6 @@ public class CreateProductAction implements Action {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter product name: ");
         String name = scanner.nextLine();
         System.out.println("Enter product price: ");

@@ -27,11 +27,7 @@ public class ProductCategoryNameValidatorTest {
     @Test
     public void shouldNotThrowException() {
         fake = createFake("fruits");
-        try {
-            victim.validate(fake);
-        } catch (Exception ex) {
-            assertNull(ex);
-        }
+        victim.validate(fake);
     }
 
     private Product createFake(String name) {

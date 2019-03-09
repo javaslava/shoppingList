@@ -5,8 +5,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.*;
-
 public class CartNameLengthValidatorTest {
     @Rule
     public final ExpectedException expectation = ExpectedException.none();
@@ -32,11 +30,7 @@ public class CartNameLengthValidatorTest {
     @Test
     public void shouldNotThrowException() {
         fake = createFake("JavaCart");
-        try {
-            victim.validate(fake);
-        } catch (Exception ex) {
-            assertNull(ex);
-        }
+        victim.validate(fake);
     }
 
     private ShoppingCart createFake(String name) {

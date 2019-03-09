@@ -39,7 +39,6 @@ public class ProductService {
 
     public Product findProductById(Long id) {
         Optional<Product> foundProduct = Optional.of(productRepo.findProductById(id));
-        foundProduct.orElseThrow(() -> new IllegalArgumentException("Product not found, id: " + id));
         return foundProduct.get();
     }
 

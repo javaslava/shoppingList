@@ -8,12 +8,11 @@ import java.util.Arrays;
 public class ProductCategoryNameValidator implements ProductValidationRule {
 
     @Override
-    public void validate(Product product){
-        checkNotNull(product);
+    public void validate(Product product) {
         Category[] categoriesArray = Category.values();
-        try{
+        try {
             Arrays.stream(categoriesArray).anyMatch(product.getCategory()::equals);
-        }catch(IllegalArgumentException ex){
+        } catch (IllegalArgumentException ex) {
             throw new ValidationException("Please, make a choice from: " + Arrays.toString(Category.values()));
         }
     }

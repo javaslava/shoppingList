@@ -2,7 +2,6 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.ShoppingCart;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class CartValidationService {

@@ -5,7 +5,6 @@ import com.javaguru.shoppinglist.domain.Product;
 public class ProductPriceValidator implements ProductValidationRule {
     @Override
     public void validate(Product product) {
-        checkNotNull(product);
         if (product.getPrice().signum() == -1) {
             throw new ValidationException("Product's price must be a positive number.");
         } else if (product.getPrice().signum() == 0) {

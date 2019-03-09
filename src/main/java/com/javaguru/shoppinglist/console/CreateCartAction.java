@@ -5,9 +5,8 @@ import com.javaguru.shoppinglist.service.CartService;
 import java.util.Scanner;
 
 public class CreateCartAction implements Action {
-
+    private final Scanner scanner = new Scanner(System.in);
     private static final String CREATE_CART_ACTION = "Create Shopping Cart";
-
     private final CartService cartService;
 
     public CreateCartAction(CartService cartService) {
@@ -16,7 +15,6 @@ public class CreateCartAction implements Action {
 
     @Override
     public void execute() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Enter Shopping Cart name: ");
         String name = scanner.nextLine();
         String cartName = cartService.createCart(name);

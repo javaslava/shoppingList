@@ -5,12 +5,12 @@ import com.javaguru.shoppinglist.domain.ShoppingCart;
 import com.javaguru.shoppinglist.repository.CartRepository;
 import com.javaguru.shoppinglist.service.validation.CartRepositorySizeValidator;
 import com.javaguru.shoppinglist.service.validation.CartValidationService;
+import com.javaguru.shoppinglist.service.validation.ProductNotNullValidator;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 public class CartService {
-
     private final CartRepository cartRepo;
     private final CartValidationService validationService;
 
@@ -45,13 +45,14 @@ public class CartService {
 
     public void deleteProductFromCart(String cartName, String productNameToDelete) {
         Optional<Product> productToDelete = cartRepo.getProductByName(cartName, productNameToDelete);
-        productToDelete.orElseThrow(() -> new IllegalArgumentException("Product named " + productNameToDelete + " not" +
-                " found"));
+        productToDelete.orElseThrow(() ->
+                new IllegalArgumentException("Product named " + productNameToDelete + " not found"));
         cartRepo.deleteProductFromCart(cartName, productToDelete.get());
     }
 
-    public void addProductToCart(String cartName, Product product) {
-        cartRepo.addProductToCart(cartName, product);
+    public void addProductToCart(String cartName, Optional<Product> product) {
+        new ProductNotNullValidator().validate(product);
+        cartRepo.addProductToCart(cartName, product.get());
     }
 
     public String getShoppingCartsNames() {

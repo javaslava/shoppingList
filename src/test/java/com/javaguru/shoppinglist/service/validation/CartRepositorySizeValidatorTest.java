@@ -4,8 +4,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import static org.junit.Assert.assertNull;
-
 public class CartRepositorySizeValidatorTest {
     @Rule
     public final ExpectedException expectation = ExpectedException.none();
@@ -20,10 +18,6 @@ public class CartRepositorySizeValidatorTest {
 
     @Test
     public void shouldNotThrowException() {
-        try {
-            victim.validate(3);
-        } catch (Exception ex) {
-            assertNull(ex);
-        }
+        victim.validate(3);
     }
 }

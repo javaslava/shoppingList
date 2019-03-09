@@ -7,8 +7,6 @@ import org.junit.rules.ExpectedException;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.*;
-
 public class ProductPriceValidatorTest {
     @Rule
     public final ExpectedException expectation = ExpectedException.none();
@@ -16,7 +14,7 @@ public class ProductPriceValidatorTest {
     private Product fake;
 
     @Test
-    public void shouldThrowExceptionOfNegativeValue(){
+    public void shouldThrowExceptionOfNegativeValue() {
         fake = createFake(new BigDecimal(-5.00));
         expectation.expect(ValidationException.class);
         expectation.expectMessage("Product's price must be a positive number.");
@@ -24,7 +22,7 @@ public class ProductPriceValidatorTest {
     }
 
     @Test
-    public void shouldThrowExceptionOfZeroValue(){
+    public void shouldThrowExceptionOfZeroValue() {
         fake = createFake(new BigDecimal(0));
         expectation.expect(ValidationException.class);
         expectation.expectMessage("Product must have a price above zero.");
@@ -32,16 +30,12 @@ public class ProductPriceValidatorTest {
     }
 
     @Test
-    public void shouldNotThrowException(){
+    public void shouldNotThrowException() {
         fake = createFake(new BigDecimal(5.00));
-        try{
-            victim.validate(fake);
-        }catch(Exception ex){
-            assertNull(ex);
-        }
+        victim.validate(fake);
     }
 
-    private Product createFake(BigDecimal price){
+    private Product createFake(BigDecimal price) {
         Product product = new Product();
         product.setPrice(price);
         return product;

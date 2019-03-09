@@ -2,7 +2,6 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Product;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class ProductValidationService {

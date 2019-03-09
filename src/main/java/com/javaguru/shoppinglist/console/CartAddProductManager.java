@@ -20,6 +20,6 @@ public class CartAddProductManager implements CartManager {
     public void manageCart(String cartName) {
         System.out.println("Enter product name to add to " + cartName);
         Optional<Product> productToAdd = productService.getProductByName(userStringInput());
-        cartService.addProductToCart(cartName, productToAdd.get());
+        cartService.addProductToCart(cartName, productToAdd);
     }
 }

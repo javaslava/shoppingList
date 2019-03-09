@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.Silent.class)
@@ -39,13 +38,10 @@ public class CartManagerValidatorTest {
         expectation.expectMessage("Not available choice ");
         victim.validate(0);
     }
+
     @Test
     public void shouldNotThrowException() {
         when(cartManager.getCartManagerSize()).thenReturn(6);
-        try {
-            victim.validate(3);
-        } catch (Exception ex) {
-            assertNull(ex);
-        }
+        victim.validate(3);
     }
 }

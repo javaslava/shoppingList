@@ -25,7 +25,7 @@ public class ProductRepository {
         return database.values();
     }
 
-    public boolean existsByName(Product product){
-       return database.values().stream().anyMatch(p -> p.getName().compareToIgnoreCase(product.getName()) == 0);
+    public boolean existsByName(Product product) {
+        return database.values().stream().anyMatch(p -> p.getName().compareToIgnoreCase(product.getName()) == 0);
     }
 }

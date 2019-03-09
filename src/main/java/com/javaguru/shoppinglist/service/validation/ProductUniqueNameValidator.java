@@ -3,7 +3,7 @@ package com.javaguru.shoppinglist.service.validation;
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.repository.ProductRepository;
 
-public class ProductUniqueNameValidator implements ProductValidationRule{
+public class ProductUniqueNameValidator implements ProductValidationRule {
     private final ProductRepository productRepository;
 
     public ProductUniqueNameValidator(ProductRepository repo) {
