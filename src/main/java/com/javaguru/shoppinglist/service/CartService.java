@@ -4,16 +4,20 @@ import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.domain.ShoppingCart;
 import com.javaguru.shoppinglist.repository.CartRepository;
 import com.javaguru.shoppinglist.service.validation.CartRepositorySizeValidator;
-import com.javaguru.shoppinglist.service.validation.CartValidationService;
+import com.javaguru.shoppinglist.service.validation.CartValidation.CartValidationService;
 import com.javaguru.shoppinglist.service.validation.ProductNotNullValidator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
+@Service
 public class CartService {
     private final CartRepository cartRepo;
     private final CartValidationService validationService;
 
+    @Autowired
     public CartService(CartRepository cartRepo, CartValidationService validationService) {
         this.cartRepo = cartRepo;
         this.validationService = validationService;

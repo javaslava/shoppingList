@@ -2,15 +2,19 @@ package com.javaguru.shoppinglist.service;
 
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.repository.ProductRepository;
-import com.javaguru.shoppinglist.service.validation.ProductValidationService;
+import com.javaguru.shoppinglist.service.validation.ProductValidation.ProductValidationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
+@Service
 public class ProductService {
     private final ProductRepository productRepo;
     private final ProductValidationService validationService;
 
+    @Autowired
     public ProductService(ProductRepository productRepo, ProductValidationService validationService) {
         this.productRepo = productRepo;
         this.validationService = validationService;

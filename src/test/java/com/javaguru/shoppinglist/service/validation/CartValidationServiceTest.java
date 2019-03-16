@@ -1,6 +1,10 @@
 package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.ShoppingCart;
+import com.javaguru.shoppinglist.service.validation.CartValidation.CartNameLengthValidator;
+import com.javaguru.shoppinglist.service.validation.CartValidation.CartUniqueNameValidator;
+import com.javaguru.shoppinglist.service.validation.CartValidation.CartValidationRule;
+import com.javaguru.shoppinglist.service.validation.CartValidation.CartValidationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

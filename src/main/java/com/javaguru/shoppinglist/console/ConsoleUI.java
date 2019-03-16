@@ -9,12 +9,11 @@ import java.util.Scanner;
 @Component
 public class ConsoleUI {
     private final ConsoleUIRepository consoleMenu;
-    private final Scanner scanner;
+    private final Scanner scanner = new Scanner(System.in);
 
     @Autowired
-    public ConsoleUI(ConsoleUIRepository consoleMenu, Scanner scanner) {
+    public ConsoleUI(ConsoleUIRepository consoleMenu) {
         this.consoleMenu = consoleMenu;
-        this.scanner = scanner;
     }
 
     public void start() {

@@ -1,13 +1,17 @@
 package com.javaguru.shoppinglist.service;
 
 import com.javaguru.shoppinglist.repository.CartManagerRepository;
-import com.javaguru.shoppinglist.service.validation.CartManagerValidationService;
+import com.javaguru.shoppinglist.service.validation.CartManagerValidation.CartManagerValidationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CartManagerService {
 
     private final CartManagerRepository cartManagerRepo;
     private final CartManagerValidationService validationService;
 
+    @Autowired
     public CartManagerService(CartManagerRepository cartManagerRepo,
                               CartManagerValidationService validationService) {
         this.cartManagerRepo = cartManagerRepo;

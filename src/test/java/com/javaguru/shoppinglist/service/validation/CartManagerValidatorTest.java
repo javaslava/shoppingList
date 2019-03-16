@@ -1,6 +1,7 @@
 package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.repository.CartManagerRepository;
+import com.javaguru.shoppinglist.service.validation.CartManagerValidation.CartManagerValidator;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;

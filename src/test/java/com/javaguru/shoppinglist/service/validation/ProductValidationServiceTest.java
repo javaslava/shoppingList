@@ -1,6 +1,7 @@
 package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Product;
+import com.javaguru.shoppinglist.service.validation.ProductValidation.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

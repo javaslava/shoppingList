@@ -2,13 +2,15 @@ package com.javaguru.shoppinglist.repository;
 
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.domain.ShoppingCart;
+import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Repository
 public class CartRepository {
-    private Map<String, List<Product>> shoppingCarts = new HashMap<>();
+    private Map<String, List<Product>> shoppingCarts = new LinkedHashMap<>();
 
     public ShoppingCart insert(ShoppingCart cart) {
         shoppingCarts.put(cart.getName(), new ArrayList<>());

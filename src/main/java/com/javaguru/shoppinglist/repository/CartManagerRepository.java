@@ -1,6 +1,6 @@
 package com.javaguru.shoppinglist.repository;
 
-import com.javaguru.shoppinglist.console.*;
+import com.javaguru.shoppinglist.console.cartManager.CartManager;
 
 import java.util.Map;
 
