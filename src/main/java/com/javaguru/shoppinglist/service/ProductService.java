@@ -37,17 +37,16 @@ public class ProductService {
         product.setActualPrice(actualProductPrice);
         product.setCategory(category);
         validationService.validate(product);
-        Product createdProduct = productRepo.insert(product);
-        return createdProduct.getId();
+        return productRepo.insert(product);
     }
 
     public Product findProductById(Long id) {
-        Optional<Product> foundProduct = Optional.of(productRepo.findProductById(id));
-        return foundProduct.get();
+        return productRepo.findProductById(id).orElseThrow(()
+                -> new IllegalArgumentException("Product with specified" + " id " + id + " not found"));
     }
 
     public Optional<Product> getProductByName(String productName) {
-        return productRepo.getDatabaseValues().stream().filter((p) -> p.getName().equals(productName)).findFirst();
+        return productRepo.getProductByName(productName);
     }
 
     BigDecimal priceFilter(String price) {
@@ -70,7 +69,7 @@ public class ProductService {
         return new BigDecimal(discount).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-    String descriptionFilter(String description) {
+     String descriptionFilter(String description) {
         if (description.equals("")) {
             description = "NO DESCRIPTION";
         }

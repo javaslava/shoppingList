@@ -1,7 +1,7 @@
 package com.javaguru.shoppinglist.service;
 
 import com.javaguru.shoppinglist.domain.ShoppingCart;
-import com.javaguru.shoppinglist.repository.CartRepository;
+import com.javaguru.shoppinglist.repository.InMemoryCartRepository;
 import com.javaguru.shoppinglist.service.validation.CartValidation.CartValidationService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class CartServiceTest {
     @Mock
-    private CartRepository cartRepo;
+    private InMemoryCartRepository cartRepo;
     @Mock
     private CartValidationService validationService;
     @InjectMocks
@@ -25,7 +25,7 @@ public class CartServiceTest {
     @Test
     public void shouldCreateCart() {
         ShoppingCart shoppingCart = createCart();
-        when(cartRepo.insert(shoppingCart)).thenReturn(shoppingCart);
+        when(cartRepo.createCart(shoppingCart)).thenReturn(shoppingCart);
         String cartName = "TEST_CART";
         String createdCartName = victim.createCart(cartName);
         assertEquals("TEST_CART", createdCartName);

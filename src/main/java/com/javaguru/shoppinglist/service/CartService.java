@@ -27,7 +27,7 @@ public class CartService {
         ShoppingCart cart = new ShoppingCart();
         cart.setName(name);
         validationService.validate(cart);
-        ShoppingCart createdCart = cartRepo.insert(cart);
+        ShoppingCart createdCart = cartRepo.createCart(cart);
         return createdCart.getName();
     }
 
@@ -50,7 +50,7 @@ public class CartService {
     public void deleteProductFromCart(String cartName, String productNameToDelete) {
         Optional<Product> productToDelete = cartRepo.getProductByName(cartName, productNameToDelete);
         productToDelete.orElseThrow(() ->
-                new IllegalArgumentException("Product named " + productNameToDelete + " not found"));
+                new IllegalArgumentException("Product, named " + productNameToDelete + " not found"));
         cartRepo.deleteProductFromCart(cartName, productToDelete.get());
     }
 

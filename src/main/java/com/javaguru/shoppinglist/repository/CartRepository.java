@@ -2,63 +2,31 @@ package com.javaguru.shoppinglist.repository;
 
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.domain.ShoppingCart;
-import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-@Repository
-public class CartRepository {
-    private Map<String, List<Product>> shoppingCarts = new LinkedHashMap<>();
+public interface CartRepository {
 
-    public ShoppingCart insert(ShoppingCart cart) {
-        shoppingCarts.put(cart.getName(), new ArrayList<>());
-        return cart;
-    }
+    ShoppingCart createCart(ShoppingCart cart);
 
-    public boolean checkForCartByName(String cartName) {
-        return shoppingCarts.containsKey(cartName);
-    }
+    boolean checkForCartByName(String cartName);
 
-    public void removeCartContent(String cartName) {
-        shoppingCarts.get(cartName).clear();
-    }
+    void removeCartContent(String cartName);
 
-    public int getShoppingCartRepoSize() {
-        return shoppingCarts.size();
-    }
+    int getShoppingCartRepoSize();
 
-    public String getShoppingCartsNames() {
-        return shoppingCarts.keySet().stream()
-                .map(String::valueOf).collect(Collectors.joining(", "));
-    }
+    String getShoppingCartsNames();
 
-    public void deleteCartByName(String cartName) {
-        shoppingCarts.remove(cartName);
-    }
+    void deleteCartByName(String cartName);
 
-    public void addProductToCart(String cartName, Product product) {
-        shoppingCarts.get(cartName).add(product);
-    }
+    void addProductToCart(String cartName, Product product);
 
-    public Optional<Product> getProductByName(String cartName, String productName) {
-        return shoppingCarts.get(cartName).stream()
-                .filter((p) -> p.getName().equals(productName)).findFirst();
-    }
+    Optional<Product> getProductByName(String cartName, String productName);
 
-    public void deleteProductFromCart(String cartName, Product product) {
-        shoppingCarts.get(cartName).remove(product);
-    }
+    void deleteProductFromCart(String cartName, Product product);
 
-    public void printCartContent(String cartName) {
-        shoppingCarts.get(cartName).stream()
-                .forEach(element -> System.out.println(element));
-    }
+    void printCartContent(String cartName);
 
-    public BigDecimal getTotalCartPrice(String cartName) {
-        return shoppingCarts.get(cartName).stream()
-                .map(Product::getActualPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
+    BigDecimal getTotalCartPrice(String cartName);
 }
