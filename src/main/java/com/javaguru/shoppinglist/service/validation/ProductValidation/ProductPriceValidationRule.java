@@ -5,7 +5,7 @@ import com.javaguru.shoppinglist.service.validation.ValidationException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProductPriceValidator implements ProductValidationRule {
+public class ProductPriceValidationRule implements ProductValidationRule {
     @Override
     public void validate(Product product) {
         if (product.getPrice().signum() == -1) {

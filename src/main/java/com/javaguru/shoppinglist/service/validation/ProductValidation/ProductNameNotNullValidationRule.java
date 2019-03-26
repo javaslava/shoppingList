@@ -5,7 +5,7 @@ import com.javaguru.shoppinglist.service.validation.ValidationException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProductNameNotNullValidator implements ProductValidationRule {
+public class ProductNameNotNullValidationRule implements ProductValidationRule {
     @Override
     public void validate(Product product) {
         checkNotNull(product);

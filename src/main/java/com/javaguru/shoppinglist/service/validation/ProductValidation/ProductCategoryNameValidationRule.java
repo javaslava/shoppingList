@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 @Component
-public class ProductCategoryNameValidator implements ProductValidationRule {
+public class ProductCategoryNameValidationRule implements ProductValidationRule {
 
     @Override
     public void validate(Product product) {

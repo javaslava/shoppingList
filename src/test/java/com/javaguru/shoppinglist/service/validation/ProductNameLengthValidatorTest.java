@@ -1,7 +1,7 @@
 package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Product;
-import com.javaguru.shoppinglist.service.validation.ProductValidation.ProductNameLengthValidator;
+import com.javaguru.shoppinglist.service.validation.ProductValidation.ProductNameLengthValidationRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -9,7 +9,7 @@ import org.junit.rules.ExpectedException;
 public class ProductNameLengthValidatorTest {
     @Rule
     public final ExpectedException expectation = ExpectedException.none();
-    ProductNameLengthValidator victim = new ProductNameLengthValidator();
+    ProductNameLengthValidationRule victim = new ProductNameLengthValidationRule();
     private Product fake;
 
     @Test

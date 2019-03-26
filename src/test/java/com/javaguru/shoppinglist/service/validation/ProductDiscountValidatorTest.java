@@ -1,7 +1,7 @@
 package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Product;
-import com.javaguru.shoppinglist.service.validation.ProductValidation.ProductDiscountValidator;
+import com.javaguru.shoppinglist.service.validation.ProductValidation.ProductDiscountValidationRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class ProductDiscountValidatorTest {
     @Rule
     public final ExpectedException expectation = ExpectedException.none();
-    ProductDiscountValidator victim = new ProductDiscountValidator();
+    ProductDiscountValidationRule victim = new ProductDiscountValidationRule();
     private Product fake;
 
     @Test

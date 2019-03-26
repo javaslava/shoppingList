@@ -5,7 +5,7 @@ import com.javaguru.shoppinglist.service.validation.ValidationException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProductNameLengthValidator implements ProductValidationRule {
+public class ProductNameLengthValidationRule implements ProductValidationRule {
 
     private final int MIN_NAME_LENGTH = 3;
     private final int MAX_NAME_LENGTH = 32;

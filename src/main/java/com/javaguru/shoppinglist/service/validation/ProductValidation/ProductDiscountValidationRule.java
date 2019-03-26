@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 @Component
-public class ProductDiscountValidator implements ProductValidationRule {
+public class ProductDiscountValidationRule implements ProductValidationRule {
     private final BigDecimal MAX_DISCOUNT_LIMIT = new BigDecimal("100");
 
     @Override

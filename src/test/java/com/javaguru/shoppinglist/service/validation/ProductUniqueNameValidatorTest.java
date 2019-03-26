@@ -2,7 +2,7 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.repository.InMemoryProductRepository;
-import com.javaguru.shoppinglist.service.validation.ProductValidation.ProductUniqueNameValidator;
+import com.javaguru.shoppinglist.service.validation.ProductValidation.ProductUniqueNameValidationRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -20,7 +20,7 @@ public class ProductUniqueNameValidatorTest {
     private InMemoryProductRepository repo;
 
     @InjectMocks
-    private ProductUniqueNameValidator victim;
+    private ProductUniqueNameValidationRule victim;
 
     @Test
     public void shouldThrowExceptionRepoHasSameProductName() {
