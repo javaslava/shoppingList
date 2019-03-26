@@ -56,17 +56,4 @@ public class DatabaseProductRepository {
                 "FROM tasks where name=" + name;
         return jdbcTemplate.queryForObject(query, Boolean.class);
     }
-
-   // @Override
-  //  public Optional<Task> findTaskByName(String name) {
-   //     return Optional.empty();
-   // }
-
-
-
-
-
-
-
-
 }

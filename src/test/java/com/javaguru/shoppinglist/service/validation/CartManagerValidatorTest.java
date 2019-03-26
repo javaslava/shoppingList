@@ -1,6 +1,6 @@
 package com.javaguru.shoppinglist.service.validation;
 
-import com.javaguru.shoppinglist.repository.CartManagerRepository;
+import com.javaguru.shoppinglist.console.cartManager.CartManagerMenu;
 import com.javaguru.shoppinglist.service.validation.CartManagerValidation.CartManagerValidator;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 public class CartManagerValidatorTest {
 
     @Mock
-    private CartManagerRepository cartManager;
+    private CartManagerMenu cartManager;
 
     @InjectMocks
     private CartManagerValidator victim;

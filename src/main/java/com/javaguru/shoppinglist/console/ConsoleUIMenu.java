@@ -1,13 +1,13 @@
-package com.javaguru.shoppinglist.repository;
+package com.javaguru.shoppinglist.console;
 
 import com.javaguru.shoppinglist.console.action.Action;
 
 import java.util.List;
 
-public class ConsoleUIRepository {
+public class ConsoleUIMenu {
     private List<Action> actions;
 
-    public ConsoleUIRepository(List<Action> actions) {
+    public ConsoleUIMenu(List<Action> actions) {
         this.actions = actions;
     }
 
