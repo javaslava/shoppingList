@@ -2,7 +2,7 @@ package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.ShoppingCart;
 import com.javaguru.shoppinglist.repository.CartRepository;
-import com.javaguru.shoppinglist.service.validation.CartValidation.CartUniqueNameValidator;
+import com.javaguru.shoppinglist.service.validation.CartValidation.CartUniqueNameValidationRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -20,7 +20,7 @@ public class CartUniqueNameValidatorTest {
     private CartRepository repo;
 
     @InjectMocks
-    private CartUniqueNameValidator victim;
+    private CartUniqueNameValidationRule victim;
 
     @Rule
     public final ExpectedException expectation = ExpectedException.none();

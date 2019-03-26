@@ -1,8 +1,8 @@
 package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.ShoppingCart;
-import com.javaguru.shoppinglist.service.validation.CartValidation.CartNameLengthValidator;
-import com.javaguru.shoppinglist.service.validation.CartValidation.CartUniqueNameValidator;
+import com.javaguru.shoppinglist.service.validation.CartValidation.CartNameLengthValidationRule;
+import com.javaguru.shoppinglist.service.validation.CartValidation.CartUniqueNameValidationRule;
 import com.javaguru.shoppinglist.service.validation.CartValidation.CartValidationRule;
 import com.javaguru.shoppinglist.service.validation.CartValidation.CartValidationService;
 import org.junit.Before;
@@ -24,9 +24,9 @@ import static org.mockito.Mockito.verify;
 public class CartValidationServiceTest {
 
     @Mock
-    private CartNameLengthValidator cartNameLengthValidator;
+    private CartNameLengthValidationRule cartNameLengthValidator;
     @Mock
-    private CartUniqueNameValidator cartUniqueNameValidator;
+    private CartUniqueNameValidationRule cartUniqueNameValidator;
 
     @Captor
     private ArgumentCaptor<ShoppingCart> captor;

@@ -22,19 +22,19 @@ import static org.mockito.Mockito.verify;
 public class ProductValidationServiceTest {
 
     @Mock
-    private ProductUniqueNameValidator productUniqueName;
+    private ProductUniqueNameValidationRule productUniqueName;
     @Mock
-    private ProductNameNotNullValidator productNameNotNull;
+    private ProductNameNotNullValidationRule productNameNotNull;
     @Mock
-    private ProductNameLengthValidator productNameLength;
+    private ProductNameLengthValidationRule productNameLength;
     @Mock
-    private ProductPriceValidator productPrice;
+    private ProductPriceValidationRule productPrice;
     @Mock
-    private ProductDiscountValidator productDiscount;
+    private ProductDiscountValidationRule productDiscount;
     @Mock
-    private ProductDescriptionValidator productDescription;
+    private ProductDescriptionValidationRule productDescription;
     @Mock
-    private ProductCategoryNameValidator productCategoryName;
+    private ProductCategoryNameValidationRule productCategoryName;
 
     @Captor
     private ArgumentCaptor<Product> captor;

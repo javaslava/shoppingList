@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ProductUniqueNameValidator implements ProductValidationRule {
+public class ProductUniqueNameValidationRule implements ProductValidationRule {
     private final ProductRepository productRepository;
 
     @Autowired
-    public ProductUniqueNameValidator(ProductRepository repo) {
+    public ProductUniqueNameValidationRule(ProductRepository repo) {
         this.productRepository = repo;
     }
 

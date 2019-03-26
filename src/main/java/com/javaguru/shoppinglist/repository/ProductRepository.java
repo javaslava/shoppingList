@@ -12,12 +12,10 @@ public class ProductRepository {
     private Map<Long, Product> database = new HashMap<>();
     private Long productIdSequence = 0L;
 
-    //@Override
     public Product findProductById(Long id) {
         return database.get(id);
     }
 
-    //@Override
     public Product insert(Product product) {
         product.setId(productIdSequence);
         database.put(productIdSequence, product);
@@ -25,12 +23,10 @@ public class ProductRepository {
         return product;
     }
 
-    // @Override
     public Collection<Product> getDatabaseValues() {
         return database.values();
     }
 
-    // @Override
     public boolean existsByName(Product product) {
         return database.values().stream().anyMatch(p -> p.getName().compareToIgnoreCase(product.getName()) == 0);
     }

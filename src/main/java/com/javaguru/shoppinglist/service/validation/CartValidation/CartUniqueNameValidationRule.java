@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CartUniqueNameValidator implements CartValidationRule {
+public class CartUniqueNameValidationRule implements CartValidationRule {
 
     private final CartRepository cartRepo;
 
     @Autowired
-    public CartUniqueNameValidator(CartRepository cartRepo) {
+    public CartUniqueNameValidationRule(CartRepository cartRepo) {
         this.cartRepo = cartRepo;
     }
 
