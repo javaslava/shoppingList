@@ -1,14 +1,14 @@
-package com.javaguru.shoppinglist.repository;
+package com.javaguru.shoppinglist.console.cartManager;
 
 import com.javaguru.shoppinglist.console.cartManager.CartManager;
 
 import java.util.Map;
 
-public class CartManagerRepository {
+public class CartManagerMenu {
 
     private Map<String, CartManager> cartManager;
 
-    public CartManagerRepository(Map<String, CartManager> cartManager) {
+    public CartManagerMenu(Map<String, CartManager> cartManager) {
         this.cartManager = cartManager;
     }
 

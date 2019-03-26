@@ -1,7 +1,7 @@
 package com.javaguru.shoppinglist.config;
 
 import com.javaguru.shoppinglist.console.cartManager.CartManager;
-import com.javaguru.shoppinglist.repository.CartManagerRepository;
+import com.javaguru.shoppinglist.console.cartManager.CartManagerMenu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,7 @@ public class CartManagerConfig {
     }
 
     @Bean
-    public CartManagerRepository cartManagerRepository() {
+    public CartManagerMenu cartManagerRepository() {
         Map<String, CartManager> cartManagerMenu = new LinkedHashMap<>();
         cartManagerMenu.put("1. Add product to ", cartAddProductManager);
         cartManagerMenu.put("2. Delete product from ", cartDeleteProductManager);
@@ -39,6 +39,6 @@ public class CartManagerConfig {
         cartManagerMenu.put("4. Get total actual price of products in ", cartTotalPriceManager);
         cartManagerMenu.put("5. Remove all from ", cartRemoveContentManager);
         cartManagerMenu.put("6. Delete ", cartDeleteManager);
-        return new CartManagerRepository(cartManagerMenu);
+        return new CartManagerMenu(cartManagerMenu);
     }
 }

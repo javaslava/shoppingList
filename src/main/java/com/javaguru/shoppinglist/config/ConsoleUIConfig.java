@@ -1,7 +1,7 @@
 package com.javaguru.shoppinglist.config;
 
 import com.javaguru.shoppinglist.console.action.Action;
-import com.javaguru.shoppinglist.repository.ConsoleUIRepository;
+import com.javaguru.shoppinglist.console.ConsoleUIMenu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,13 +28,13 @@ public class ConsoleUIConfig {
     }
 
     @Bean
-    public ConsoleUIRepository consoleUIrepository() {
+    public ConsoleUIMenu consoleUIrepository() {
         List<Action> actions = new ArrayList<>();
         actions.add(createProductAction);
         actions.add(findProductByIdAction);
         actions.add(createCartAction);
         actions.add(manageCartAction);
         actions.add(exitAction);
-        return new ConsoleUIRepository(actions);
+        return new ConsoleUIMenu(actions);
     }
 }
