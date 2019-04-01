@@ -13,4 +13,5 @@ public interface ProductRepository {
    Optional<Product> getProductByName(String productName);
 
    boolean existsByName(Product product);
+
 }
