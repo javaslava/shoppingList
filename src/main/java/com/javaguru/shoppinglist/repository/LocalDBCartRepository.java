@@ -129,7 +129,8 @@ public class LocalDBCartRepository implements CartRepository {
     }
 
     private List<Long> getProductIDlist(String cartName) {
-        String queryForProductID = "SELECT product_id FROM cartsContent WHERE cart_id='" + getCartID(cartName) + "'";
+        String queryForProductID =
+                "SELECT product_id FROM cartsContent WHERE cart_id='" + getCartID(cartName) + "'";
         return jdbcTemplate.queryForList(queryForProductID, Long.class);
     }
 }
