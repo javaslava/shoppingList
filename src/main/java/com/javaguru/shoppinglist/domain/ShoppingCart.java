@@ -4,6 +4,8 @@ import java.util.Objects;
 
 public class ShoppingCart {
 
+    public ShoppingCart(){}
+
     private String name;
 
     public String getName() {

@@ -8,6 +8,8 @@ import com.javaguru.shoppinglist.service.validation.CartValidation.CartValidatio
 import com.javaguru.shoppinglist.service.validation.ProductNotNullValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -22,7 +24,7 @@ public class CartService {
         this.cartRepo = cartRepo;
         this.validationService = validationService;
     }
-
+@Transactional
     public String createCart(String name) {
         ShoppingCart cart = new ShoppingCart();
         cart.setName(name);

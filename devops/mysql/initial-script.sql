@@ -1,0 +1,35 @@
+CREATE SCHEMA IF NOT EXISTS store DEFAULT CHARACTER SET utf8 ;
+USE store;
+
+CREATE TABLE IF NOT EXISTS categories (
+  id_category BIGINT PRIMARY KEY AUTO_INCREMENT,
+  category VARCHAR(15) NOT NULL
+)ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS products (
+  id_product BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(32) NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  actualPrice DECIMAL(10,2) NOT NULL,
+  description VARCHAR(50) NULL,
+  discount DECIMAL(10,2) NULL,
+  category_id BIGINT NOT NULL,
+  created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (category_id) REFERENCES categories (id_category)
+)ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS shoppingCarts (
+  id_cart BIGINT PRIMARY KEY AUTO_INCREMENT,
+  cartName VARCHAR(15) NOT NULL
+)ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS cartsContent (
+  id_cart_content BIGINT PRIMARY KEY AUTO_INCREMENT,
+  cart_id BIGINT NOT NULL,
+  product_id BIGINT NOT NULL,
+  FOREIGN KEY (cart_id) REFERENCES shoppingCarts (id_cart),
+  FOREIGN KEY (product_id) REFERENCES products (id_product)
+)ENGINE = InnoDB;
+ALTER TABLE products AUTO_INCREMENT=1001;
+ALTER TABLE categories AUTO_INCREMENT=101;
+

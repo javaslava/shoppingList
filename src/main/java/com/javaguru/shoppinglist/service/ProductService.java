@@ -5,6 +5,8 @@ import com.javaguru.shoppinglist.repository.ProductRepository;
 import com.javaguru.shoppinglist.service.validation.ProductValidation.ProductValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -23,7 +25,7 @@ public class ProductService {
     private final BigDecimal MIN_PRICE_TO_DISCOUNT = new BigDecimal(20);
     private final BigDecimal bd1 = BigDecimal.valueOf(1);
     private final BigDecimal bd100 = BigDecimal.valueOf(100);
-
+@Transactional
     public Long createProduct(String name, String price, String description, String discount, String category) {
         Product product = new Product();
         BigDecimal productPrice = priceFilter(price);

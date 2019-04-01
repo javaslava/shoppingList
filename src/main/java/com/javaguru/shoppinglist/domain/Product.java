@@ -1,17 +1,36 @@
 package com.javaguru.shoppinglist.domain;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Product {
+@Entity
+@Table(name = "products")
 
+public class Product {
+    @Id
+    @Column(name = "id_product")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "price")
     private BigDecimal price;
-    private String category;
+//    @Enumerated(EnumType.ORDINAL)
+//    @Column(name = "category_id", columnDefinition = "bigint")
+   @OneToOne
+   //@JoinColumn(name = "id_category")
+   @JoinTable(name = "categories",
+   joinColumns = @JoinColumn(name="category", referencedColumnName="id_category"))
+    private Category category;
+    @Column(name = "discount")
     private BigDecimal discount;
+    @Column(name = "description")
     private String description;
+    @Column(name = "ActualPrice")
     private BigDecimal actualPrice;
+
+public Product(){}
 
     public Long getId() {
         return id;
@@ -37,12 +56,22 @@ public class Product {
         this.price = price;
     }
 
+//    public Category getCategory() {
+//        return Category.valueOf(category);
+ //   }
+
     public Category getCategory() {
-        return Category.valueOf(category);
+        return category;
     }
 
+
+
+//    public void setCategory(String category) {
+//        this.category = category.toUpperCase();
+//    }
+
     public void setCategory(String category) {
-        this.category = category.toUpperCase();
+        this.category = Category.valueOf(category);
     }
 
     public BigDecimal getDiscount() {
@@ -84,7 +113,9 @@ public class Product {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getPrice(), getCategory(), getDiscount(), getDescription());
+        return Objects.hash(getId(), getName(), getPrice(),
+                getCategory(),
+                getDiscount(), getDescription());
     }
 
     @Override
