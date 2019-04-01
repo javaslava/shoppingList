@@ -28,10 +28,9 @@ public class LocalDBProductRepository implements ProductRepository {
 
     @Override
     public Long insert(Product product) {
-        createProductsTable();
-        createCategoriesTable();
+        //createCategories();
         String query =
-                "INSERT INTO products (name, price, actualPrice, description, discount, categoryID) values (" +
+                "INSERT INTO products (name, price, actualPrice, description, discount, category_id) values (" +
                         "?, ?, ?, ?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
@@ -45,12 +44,15 @@ public class LocalDBProductRepository implements ProductRepository {
             ps.setInt(6, getCategoryID(product));
             return ps;
         }, keyHolder);
+        product.setId(keyHolder.getKey().longValue());
         return keyHolder.getKey().longValue();
     }
 
     @Override
     public Optional<Product> findProductById(Long id) {
-        return queryForProduct(id, "id");
+        Product product = queryForProduct(id, "id_product").get();
+        product.setId(id);
+        return Optional.ofNullable(product);
     }
 
     @Override
@@ -60,7 +62,6 @@ public class LocalDBProductRepository implements ProductRepository {
 
     @Override
     public boolean existsByName(Product product) {
-        createProductsTable();
         String query =
                 "SELECT CASE WHEN count(*)> 0 " +
                         "THEN true ELSE false END FROM products WHERE name='" + product.getName() + "'";
@@ -68,31 +69,14 @@ public class LocalDBProductRepository implements ProductRepository {
     }
 
     private Optional<Product> queryForProduct(Object obj, String field) {
-        createProductsTable();
-        createCategoriesTable();
-        String query = "SELECT products.id, name, price, actualPrice, description, discount, category " +
+        String query = "SELECT id_product, name, price, actualPrice, description, discount, category " +
                 "FROM products, categories " +
-                "WHERE products." + field + "='" + obj + "' AND categories.id = products.categoryID";
+                "WHERE " + field + "='" + obj + "' AND id_category = category_id";
         List<Product> products = jdbcTemplate.query(query, new BeanPropertyRowMapper(Product.class));
         if (!products.isEmpty()) {
             return Optional.ofNullable(products.get(0));
         }
         return Optional.empty();
-    }
-
-     void createProductsTable() {
-        String query = "CREATE TABLE IF NOT EXISTS products (\n" +
-                "  id BIGINT NOT NULL AUTO_INCREMENT,\n" +
-                "  name VARCHAR(32) NOT NULL,\n" +
-                "  price DECIMAL(10,2) NOT NULL,\n" +
-                "  actualPrice DECIMAL(10,2) NOT NULL,\n" +
-                "  description VARCHAR(50) NULL,\n" +
-                "  discount DECIMAL(10,2) NOT NULL,\n" +
-                "  categoryID INT NOT NULL,\n" +
-                "  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n" +
-                "  PRIMARY KEY (id)\n" +
-                ")";
-        jdbcTemplate.execute(query);
     }
 
     private void createCategories() {
@@ -108,17 +92,8 @@ public class LocalDBProductRepository implements ProductRepository {
         }
     }
 
-    void createCategoriesTable() {
-        String query = "CREATE TABLE IF NOT EXISTS categories(" +
-                "id BIGINT NOT NULL AUTO_INCREMENT, " +
-                "category VARCHAR(15) NOT NULL, " +
-                "PRIMARY KEY (id))";
-        jdbcTemplate.execute(query);
-        createCategories();
-    }
-
     private Integer getCategoryID(Product product) {
-        String query = "SELECT id FROM categories WHERE category = '" + product.getCategory() + "'";
+        String query = "SELECT id_category FROM categories WHERE category = '" + product.getCategory() + "'";
         return jdbcTemplate.queryForObject(query, Integer.class);
     }
 }
