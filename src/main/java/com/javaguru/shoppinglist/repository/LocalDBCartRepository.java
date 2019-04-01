@@ -16,17 +16,14 @@ import java.util.*;
 public class LocalDBCartRepository implements CartRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final LocalDBProductRepository productRepo;
 
     @Autowired
-    public LocalDBCartRepository(JdbcTemplate jdbcTemplate, LocalDBProductRepository productRepo) {
+    public LocalDBCartRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
-        this.productRepo = productRepo;
     }
 
     @Override
     public ShoppingCart createCart(ShoppingCart cart) {
-        createShoppingCartsTable();
         String query = "INSERT INTO shoppingCarts(cartName) values ('" + cart.getName() + "')";
         jdbcTemplate.update(query);
         return cart;
@@ -34,7 +31,6 @@ public class LocalDBCartRepository implements CartRepository {
 
     @Override
     public boolean checkForCartByName(String cartName) {
-        createShoppingCartsTable();
         String query =
                 "SELECT CASE WHEN count(*)> 0 " +
                         "THEN true ELSE false END " +
@@ -44,9 +40,8 @@ public class LocalDBCartRepository implements CartRepository {
 
     @Override
     public void removeCartContent(String cartName) {
-        createCartContentTable();
-        String query = "DELETE FROM cartContent WHERE cartContent.cartID=" +
-                "(SELECT id FROM shoppingCarts WHERE cartName='" + cartName + "')";
+        String query = "DELETE FROM cartsContent WHERE cart_id=" +
+                "(SELECT id_cart FROM shoppingCarts WHERE cartName='" + cartName + "')";
         jdbcTemplate.execute(query);
     }
 
@@ -59,7 +54,6 @@ public class LocalDBCartRepository implements CartRepository {
 
     @Override
     public int getShoppingCartRepoSize() {
-        createShoppingCartsTable();
         String query = "SELECT cartName FROM shoppingCarts";
         List<String> carts = jdbcTemplate.query(query,
                 new BeanPropertyRowMapper(String.class));
@@ -71,7 +65,6 @@ public class LocalDBCartRepository implements CartRepository {
 
     @Override
     public String getShoppingCartsNames() {
-        createShoppingCartsTable();
         String query = "SELECT cartName FROM shoppingCarts";
         List<String> carts = jdbcTemplate.queryForList(query, String.class);
         return String.join(", ", carts);
@@ -79,20 +72,36 @@ public class LocalDBCartRepository implements CartRepository {
 
     @Override
     public void addProductToCart(String cartName, Product product) {
-        createCartContentTable();
-        String getCartID = "SELECT id FROM shoppingCarts WHERE cartName='" + cartName + "'";
-        String query = "INSERT INTO cartContent (cartID, productID) VALUES ((" + getCartID + "), ?)";
-        jdbcTemplate.update(query, product.getId());
+        String query = "INSERT INTO cartsContent (cart_id, product_id) " +
+                "VALUES ((SELECT id_cart FROM shoppingCarts WHERE cartName='" + cartName + "'), " +
+                "(" + getProductID(product.getName()) + "))";
+        jdbcTemplate.update(query);
+    }
+
+    @Override
+    public void deleteProductFromCart(String cartName, Product product) {
+        String query = "DELETE FROM cartsContent WHERE product_id=(" + getProductID(product.getName()) + ") " +
+                "AND cart_id=(SELECT id_cart FROM shoppingCarts WHERE cartName='" + cartName + "') LIMIT 1";
+        jdbcTemplate.execute(query);
+    }
+
+    @Override
+    public void printCartContent(String cartName) {
+        for (Long element : getProductIDlist(cartName)) {
+            String query = "SELECT  name, price, actualPrice, description, discount, category " +
+                    "FROM products, categories " +
+                    "WHERE id_product='" + element + "' AND id_category=category_id";
+            Product product = (Product) jdbcTemplate.queryForObject(query, new BeanPropertyRowMapper(Product.class));
+            product.setId(element);
+            System.out.println(product);
+        }
     }
 
     @Override
     public Optional<Product> getProductByName(String cartName, String productName) {
-        productRepo.createProductsTable();
-        productRepo.createCategoriesTable();
-        createCartContentTable();
-        String query = "SELECT products.id, name, price, actualPrice, description, discount, category " +
-                "FROM products, categories, cartContent " +
-                "WHERE products.name='" + productName + "' AND productID = products.id";
+        String query = "SELECT id_product, name, price, actualPrice, description, discount, category " +
+                "FROM products, categories, cartsContent " +
+                "WHERE name='" + productName + "' AND product_id = id_product";
         List<Product> products = jdbcTemplate.query(query, new BeanPropertyRowMapper(Product.class));
         if (!products.isEmpty()) {
             return Optional.ofNullable(products.get(0));
@@ -101,62 +110,26 @@ public class LocalDBCartRepository implements CartRepository {
     }
 
     @Override
-    public void deleteProductFromCart(String cartName, Product product) {
-        String query = "DELETE FROM cartContent WHERE productID = '" + product.getId() + "' " +
-                "AND cartID=(SELECT id FROM shoppingCarts WHERE cartName='" + cartName + "')";
-        jdbcTemplate.execute(query);
-    }
-
-    @Override
-    public void printCartContent(String cartName) {
-        productRepo.createProductsTable();
-        productRepo.createCategoriesTable();
-        createCartContentTable();
-        for (Long element : getProductIDlist(cartName)) {
-            String query = "SELECT products.id, name, price, actualPrice, description, discount, category " +
-                    "FROM products, categories " +
-                    "WHERE products.id='" + element + "' AND categories.id=products.categoryID";
-            System.out.println(jdbcTemplate.query(query, new BeanPropertyRowMapper(Product.class)));
-        }
-    }
-
-    @Override
     public BigDecimal getTotalCartPrice(String cartName) {
-        productRepo.createProductsTable();
-        productRepo.createCategoriesTable();
-        createCartContentTable();
         BigDecimal sum = new BigDecimal(0);
         for (Long element : getProductIDlist(cartName)) {
-            String query = "SELECT actualPrice FROM products WHERE id='" + element + "'";
+            String query = "SELECT actualPrice FROM products WHERE id_product='" + element + "'";
             sum = sum.add(jdbcTemplate.queryForObject(query, BigDecimal.class));
         }
         return sum;
     }
 
+    private String getProductID(String productName) {
+        return "SELECT id_product FROM products WHERE name='" + productName + "'";
+    }
+
     private Long getCartID(String cartName) {
-        String queryForCartID = "SELECT id FROM shoppingCarts WHERE cartName='" + cartName + "'";
+        String queryForCartID = "SELECT id_cart FROM shoppingCarts WHERE cartName='" + cartName + "'";
         return jdbcTemplate.queryForObject(queryForCartID, Long.class);
     }
 
     private List<Long> getProductIDlist(String cartName) {
-        String queryForProductID = "SELECT productID FROM cartContent WHERE cartID='" + getCartID(cartName) + "'";
+        String queryForProductID = "SELECT product_id FROM cartsContent WHERE cart_id='" + getCartID(cartName) + "'";
         return jdbcTemplate.queryForList(queryForProductID, Long.class);
-    }
-
-    private void createShoppingCartsTable() {
-        String query = "CREATE TABLE IF NOT EXISTS shoppingCarts(" +
-                "id BIGINT NOT NULL AUTO_INCREMENT, " +
-                "cartName VARCHAR(15) NOT NULL, " +
-                "PRIMARY KEY (id))";
-        jdbcTemplate.execute(query);
-    }
-
-    private void createCartContentTable() {
-        String query = "CREATE TABLE IF NOT EXISTS cartContent (\n" +
-                "  id BIGINT NOT NULL AUTO_INCREMENT,\n" +
-                "  cartID BIGINT NOT NULL,\n" +
-                "  productID BIGINT NOT NULL,\n" +
-                "PRIMARY KEY (id))";
-        jdbcTemplate.execute(query);
     }
 }
