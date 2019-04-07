@@ -2,7 +2,6 @@ package com.javaguru.shoppinglist.service;
 
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.repository.InMemoryProductRepository;
-import com.javaguru.shoppinglist.repository.ProductRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -14,23 +13,23 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProductServiceTest {
 
     @Mock
-    private ProductRepository productRepo;
+    private InMemoryProductRepository productRepo;
+
     @InjectMocks
-    private Product product = product();
     private ProductService victim;
-    private ProductRepository victim2 = new InMemoryProductRepository();
+    private Product product = product();
+
     @Test
     public void shouldTestFindProductById() {
-        victim2.insert(product);
-
-        Optional<Product> result = victim2.findProductById(0l);
-        assertThat(result).isNotEmpty();
-        assertThat(result).hasValue(expectedProduct());
+        when(productRepo.findProductById(0L)).thenReturn(Optional.ofNullable(product));
+        Product result = victim.findProductById(0L);
+        assertThat(result).isEqualTo(product);
     }
 
     @Test
@@ -83,7 +82,7 @@ public class ProductServiceTest {
         product.setDescription("TEST_DESCRIPTION");
         product.setDiscount(new BigDecimal(50));
         product.setCategory("fruits");
-        product.setId(0l);
+        product.setId(0L);
         return product;
     }
 
@@ -94,7 +93,7 @@ public class ProductServiceTest {
         product.setDescription("TEST_DESCRIPTION");
         product.setDiscount(new BigDecimal(50));
         product.setCategory("fruits");
-        product.setId(0l);
+        product.setId(0L);
         return product;
     }
 }

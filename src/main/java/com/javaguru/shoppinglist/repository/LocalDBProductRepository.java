@@ -28,7 +28,7 @@ public class LocalDBProductRepository implements ProductRepository {
 
     @Override
     public Long insert(Product product) {
-        //createCategories();
+        createCategories();
         String query =
                 "INSERT INTO products (name, price, actualPrice, description, discount, category_id) values (" +
                         "?, ?, ?, ?, ?, ?)";

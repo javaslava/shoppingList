@@ -74,4 +74,14 @@ public class InMemoryCartRepository implements CartRepository {
                 .map(Product::getActualPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
+
+    @Override
+    public Optional<ShoppingCart> findCartById(Long cartId){
+        return Optional.of(new ShoppingCart());
+    }
+
+    @Override
+    public Optional<ShoppingCart> getCart(String cartName){
+        return Optional.of(new ShoppingCart());
+    }
 }

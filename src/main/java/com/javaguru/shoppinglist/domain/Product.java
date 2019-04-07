@@ -7,7 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "products")
 
-public class Product {
+public class Product{
     @Id
     @Column(name = "id_product")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,21 +16,18 @@ public class Product {
     private String name;
     @Column(name = "price")
     private BigDecimal price;
-//    @Enumerated(EnumType.ORDINAL)
-//    @Column(name = "category_id", columnDefinition = "bigint")
-   @OneToOne
-   //@JoinColumn(name = "id_category")
-   @JoinTable(name = "categories",
-   joinColumns = @JoinColumn(name="category", referencedColumnName="id_category"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category")
     private Category category;
     @Column(name = "discount")
     private BigDecimal discount;
     @Column(name = "description")
     private String description;
-    @Column(name = "ActualPrice")
+    @Column(name = "actualPrice")
     private BigDecimal actualPrice;
 
-public Product(){}
+    public Product() {
+    }
 
     public Long getId() {
         return id;
@@ -56,19 +53,9 @@ public Product(){}
         this.price = price;
     }
 
-//    public Category getCategory() {
-//        return Category.valueOf(category);
- //   }
-
     public Category getCategory() {
         return category;
     }
-
-
-
-//    public void setCategory(String category) {
-//        this.category = category.toUpperCase();
-//    }
 
     public void setCategory(String category) {
         this.category = Category.valueOf(category);

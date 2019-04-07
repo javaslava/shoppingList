@@ -3,6 +3,7 @@ package com.javaguru.shoppinglist.service;
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.domain.ShoppingCart;
 import com.javaguru.shoppinglist.repository.CartRepository;
+import com.javaguru.shoppinglist.repository.HibernateCartRepository;
 import com.javaguru.shoppinglist.service.validation.CartRepositorySizeValidator;
 import com.javaguru.shoppinglist.service.validation.CartValidation.CartValidationService;
 import com.javaguru.shoppinglist.service.validation.ProductNotNullValidator;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.math.BigDecimal;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -71,5 +73,15 @@ public class CartService {
 
     public void checkCartRepoNotEmpty() {
         new CartRepositorySizeValidator().validate(cartRepo.getShoppingCartRepoSize());
+    }
+
+    public ShoppingCart findCartById(Long cartId) {
+        return cartRepo.findCartById(cartId)
+                .orElseThrow(() -> new NoSuchElementException("Cart not found, id: " + cartId));
+    }
+
+    public ShoppingCart findCartByName(String cartName) {
+        return cartRepo.getCart(cartName)
+                .orElseThrow(() -> new NoSuchElementException("Cart not found, id: " + cartName));
     }
 }
