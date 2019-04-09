@@ -20,8 +20,7 @@ public class CartAddProductManager implements CartManager {
     @Autowired
     public CartAddProductManager(ProductService productService,
                                  CartService cartService,
-                                 CartContentService contentService
-    ) {
+                                 CartContentService contentService) {
         this.cartService = cartService;
         this.productService = productService;
         this.contentService = contentService;

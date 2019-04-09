@@ -3,16 +3,16 @@ package com.javaguru.shoppinglist.service;
 import com.javaguru.shoppinglist.domain.CartContent;
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.domain.ShoppingCart;
-import com.javaguru.shoppinglist.repository.HibernateContentRepository;
+import com.javaguru.shoppinglist.repository.ContentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CartContentService {
-    private final HibernateContentRepository cartContentRepository;
+    private final ContentRepository cartContentRepository;
 
     @Autowired
-    CartContentService(HibernateContentRepository cartContentRepository) {
+    CartContentService(ContentRepository cartContentRepository) {
         this.cartContentRepository = cartContentRepository;
     }
 

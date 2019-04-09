@@ -2,7 +2,7 @@ package com.javaguru.shoppinglist.service;
 
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.domain.ShoppingCart;
-import com.javaguru.shoppinglist.repository.HibernateCartRepository;
+import com.javaguru.shoppinglist.repository.CartRepository;
 import com.javaguru.shoppinglist.service.validation.CartRepositorySizeValidator;
 import com.javaguru.shoppinglist.service.validation.CartValidation.CartValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +15,11 @@ import java.util.Optional;
 @Service
 public class CartService {
     private final CartValidationService validationService;
-    private final HibernateCartRepository cartRepo;
+    private final CartRepository cartRepo;
 
     @Autowired
     public CartService(CartValidationService validationService,
-                       HibernateCartRepository cartRepo) {
+                       CartRepository cartRepo) {
         this.validationService = validationService;
         this.cartRepo = cartRepo;
     }
@@ -42,11 +42,13 @@ public class CartService {
     }
 
     public BigDecimal getTotalCartPrice(String cartName) {
-        return cartRepo.getTotalCartPrice(cartName);
+        ShoppingCart cart = getCartByName(cartName).get();
+        return cartRepo.getTotalCartPrice(cart);
     }
 
     public void printCartContent(String cartName) {
-        cartRepo.printCartContent(cartName);
+        ShoppingCart cart = getCartByName(cartName).get();
+        cartRepo.printCartContent(cart);
     }
 
     public void deleteProductFromCart(String cartName, String productNameToDelete) {

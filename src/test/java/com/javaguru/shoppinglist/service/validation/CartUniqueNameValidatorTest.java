@@ -1,7 +1,7 @@
 package com.javaguru.shoppinglist.service.validation;
 
 import com.javaguru.shoppinglist.domain.ShoppingCart;
-import com.javaguru.shoppinglist.repository.InMemoryCartRepository;
+import com.javaguru.shoppinglist.repository.CartRepository;
 import com.javaguru.shoppinglist.service.validation.CartValidation.CartUniqueNameValidationRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 public class CartUniqueNameValidatorTest {
 
     @Mock
-    private InMemoryCartRepository repo;
+    private CartRepository repo;
 
     @InjectMocks
     private CartUniqueNameValidationRule victim;

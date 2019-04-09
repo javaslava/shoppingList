@@ -1,7 +1,7 @@
 package com.javaguru.shoppinglist.service.validation.CartValidation;
 
 import com.javaguru.shoppinglist.domain.ShoppingCart;
-import com.javaguru.shoppinglist.repository.HibernateCartRepository;
+import com.javaguru.shoppinglist.repository.CartRepository;
 import com.javaguru.shoppinglist.service.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class CartUniqueNameValidationRule implements CartValidationRule {
 
-    private final HibernateCartRepository cartRepo;
+    private final CartRepository cartRepo;
 
     @Autowired
-    public CartUniqueNameValidationRule(HibernateCartRepository cartRepo) {
+    public CartUniqueNameValidationRule(CartRepository cartRepo) {
         this.cartRepo = cartRepo;
     }
 
