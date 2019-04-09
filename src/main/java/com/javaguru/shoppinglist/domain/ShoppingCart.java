@@ -1,9 +1,7 @@
 package com.javaguru.shoppinglist.domain;
 
-
 import javax.persistence.*;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "shoppingCarts")
@@ -14,9 +12,6 @@ public class ShoppingCart {
     private Long id;
     @Column(name = "cartName", nullable = false, unique = true)
     private String name;
-
-//    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "carts")
-//    private Set<Product> products;
 
     public Long getId() {
         return id;

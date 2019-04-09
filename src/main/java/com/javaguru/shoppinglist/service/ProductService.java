@@ -25,7 +25,8 @@ public class ProductService {
     private final BigDecimal MIN_PRICE_TO_DISCOUNT = new BigDecimal(20);
     private final BigDecimal bd1 = BigDecimal.valueOf(1);
     private final BigDecimal bd100 = BigDecimal.valueOf(100);
-@Transactional
+
+    @Transactional
     public Long createProduct(String name, String price, String description, String discount, String category) {
         Product product = new Product();
         BigDecimal productPrice = priceFilter(price);
@@ -71,7 +72,7 @@ public class ProductService {
         return new BigDecimal(discount).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-     String descriptionFilter(String description) {
+    String descriptionFilter(String description) {
         if (description.equals("")) {
             description = "NO DESCRIPTION";
         }

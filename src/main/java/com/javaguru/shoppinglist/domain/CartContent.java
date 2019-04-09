@@ -13,21 +13,13 @@ public class CartContent {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-//    @ManyToOne
-//    @JoinColumn(name = "cart_id", nullable = false)
-//    private ShoppingCart cart;
+    @ManyToOne
+    @JoinColumn(name = "cart_id", nullable = false)
+    private ShoppingCart cart;
 
-
-    @Column(name = "cart_id", nullable = false)
-    private Long cartID;
-
-//    @ManyToOne
-//    @JoinColumn(name = "product_id", nullable = false)
-//    private Product product;
-
-
-    @Column(name = "product_id", nullable = false)
-    private Long productID;
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     public Long getId() {
         return id;
@@ -37,21 +29,21 @@ public class CartContent {
         this.id = id;
     }
 
-    public Long getCartId() {
-        return cartID;
-    }
-    public void setCartId(Long cartID) {
-        this.cartID = cartID;
+    public ShoppingCart getCart() {
+        return cart;
     }
 
-    public Long getProductId() {
-        return productID;
+    public void setCart(ShoppingCart cart) {
+        this.cart = cart;
     }
 
-    public void setProductId(Long productID) {
-        this.productID = productID;
+    public Product getProduct() {
+        return product;
     }
 
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -59,21 +51,21 @@ public class CartContent {
         if (o == null || getClass() != o.getClass()) return false;
         CartContent cartContent = (CartContent) o;
         return Objects.equals(id, cartContent.id) &&
-                Objects.equals(cartID, cartContent.cartID) &&
-                Objects.equals(productID, cartContent.productID);
+                Objects.equals(cart, cartContent.cart) &&
+                Objects.equals(product, cartContent.product);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cartID, productID);
+        return Objects.hash(id, cart, product);
     }
 
     @Override
     public String toString() {
         return "CartContent{" +
                 "id=" + id +
-                ", cart=" + cartID +
-                ", product=" + productID +
+                ", cart=" + cart +
+                ", product=" + product +
                 '}';
     }
 }

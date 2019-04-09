@@ -80,5 +80,4 @@ public class AppConfig {
     public PlatformTransactionManager transactionManager(SessionFactory sessionFactory) {
         return new HibernateTransactionManager(sessionFactory);
     }
-
 }

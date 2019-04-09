@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class HibernateContentRepository {
 
     private final SessionFactory sessionFactory;
-@Autowired
+
+    @Autowired
     public HibernateContentRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-   }
+    }
 
-   public Long save(CartContent cartContent) {
-       sessionFactory.getCurrentSession().save(cartContent);
-        return cartContent.getId();
+    public void save(CartContent cartContent) {
+        sessionFactory.getCurrentSession().persist(cartContent);
     }
 }
