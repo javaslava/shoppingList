@@ -30,6 +30,4 @@ public interface CartRepository {
 
     BigDecimal getTotalCartPrice(String cartName);
 
-    Optional<ShoppingCart> findCartById(Long cartId);
-    Optional<ShoppingCart> getCart(String cartName);
 }

@@ -25,13 +25,13 @@ public class CartContentService {
         this.cartContentRepository = cartContentRepository;
     }
 
-    public Long assignContent(Long cartId, Long productId) {
-        Product product = productService.findProductById(productId);
-        ShoppingCart cart = cartService.findCartById(cartId);
-        CartContent cartContent = new CartContent();
-        cartContent.setCart(cart);
-        cartContent.setProduct(product);
-        return cartContentRepository.save(cartContent);
-    }
+//    public Long assignContent(Long cartId, Long productId) {
+//        Product product = productService.findProductById(productId);
+//        ShoppingCart cart = cartService.findCartById(cartId);
+//        CartContent cartContent = new CartContent();
+//        cartContent.setCartId(cart);
+//        cartContent.setProductId(product);
+//        return cartContentRepository.save(cartContent);
+//    }
 }
 

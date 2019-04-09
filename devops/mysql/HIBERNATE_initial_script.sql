@@ -31,7 +31,7 @@ AUTO_INCREMENT = 1001;
 alter table cartsContent
 add CONSTRAINT fk_cartsContent_cart_id
 FOREIGN KEY (cart_id) REFERENCES shoppingCarts (id_cart)
-ON delete RESTRICT
+ON delete CASCADE
 ON update CASCADE;
 
 alter table cartsContent

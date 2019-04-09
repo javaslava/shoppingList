@@ -3,6 +3,7 @@ package com.javaguru.shoppinglist.domain;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -26,8 +27,14 @@ public class Product{
     @Column(name = "actualPrice")
     private BigDecimal actualPrice;
 
-    public Product() {
-    }
+//    @ManyToMany
+//    @JoinTable(name = "cartsContent",
+//            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id_product"),
+//            inverseJoinColumns = @JoinColumn(name = "cart_id", referencedColumnName = "id_cart")
+//    )
+//    private Set<ShoppingCart> carts;
+
+
 
     public Long getId() {
         return id;

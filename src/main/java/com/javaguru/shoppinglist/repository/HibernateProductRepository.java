@@ -1,7 +1,6 @@
 package com.javaguru.shoppinglist.repository;
 
 import com.javaguru.shoppinglist.domain.Product;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,17 +31,17 @@ public class HibernateProductRepository implements ProductRepository {
     @Override
     public Optional<Product> findProductById(Long id) {
         Product product = (Product) sessionFactory.getCurrentSession().createCriteria(Product.class)
-                .add(Restrictions.eq("id_product", id))
+                .add(Restrictions.eq("id", id))
                 .uniqueResult();
         return Optional.ofNullable(product);
     }
 
-   @Override
+    @Override
     public boolean existsByName(Product product) {
         String query = "select case when count(*)> 0 " +
                 "then true else false end " +
                 "from Product where name='" + product.getName() + "'";
-        return (boolean)sessionFactory.getCurrentSession().createQuery(query)
+        return (boolean) sessionFactory.getCurrentSession().createQuery(query)
                 .setMaxResults(1)
                 .uniqueResult();
     }

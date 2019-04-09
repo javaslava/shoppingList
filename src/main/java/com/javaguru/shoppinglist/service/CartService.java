@@ -75,13 +75,4 @@ public class CartService {
         new CartRepositorySizeValidator().validate(cartRepo.getShoppingCartRepoSize());
     }
 
-    public ShoppingCart findCartById(Long cartId) {
-        return cartRepo.findCartById(cartId)
-                .orElseThrow(() -> new NoSuchElementException("Cart not found, id: " + cartId));
-    }
-
-    public ShoppingCart findCartByName(String cartName) {
-        return cartRepo.getCart(cartName)
-                .orElseThrow(() -> new NoSuchElementException("Cart not found, id: " + cartName));
-    }
 }

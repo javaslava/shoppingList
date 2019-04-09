@@ -1,6 +1,8 @@
 package com.javaguru.shoppinglist.repository;
 
 //import com.javaguru.shoppinglist.domain.CartContent;
+//import com.javaguru.shoppinglist.domain.CartContent;
+
 import com.javaguru.shoppinglist.domain.CartContent;
 import com.javaguru.shoppinglist.domain.Product;
 import com.javaguru.shoppinglist.domain.ShoppingCart;
@@ -23,8 +25,7 @@ import java.util.Optional;
 @Repository
 @Profile("hibernate")
 @Transactional
-public class HibernateCartRepository implements CartRepository
-{
+public class HibernateCartRepository implements CartRepository {
 
     private final SessionFactory sessionFactory;
 
@@ -33,13 +34,13 @@ public class HibernateCartRepository implements CartRepository
         this.sessionFactory = sessionFactory;
     }
 
-    //@Override
+    @Override
     public ShoppingCart createCart(ShoppingCart cart) {
         sessionFactory.getCurrentSession().save(cart);
         return cart;
     }
 
-   // @Override
+    @Override
     public boolean checkForCartByName(String cartName) {
         String query = "select case when count(*)> 0 " +
                 "then true else false end " +
@@ -49,19 +50,22 @@ public class HibernateCartRepository implements CartRepository
                 .uniqueResult();
     }
 
-   // @Override
+    @Override
     public void removeCartContent(String cartName) {
-
+        Long cartId = getCartByName(cartName).get().getId();
+        Query query = sessionFactory.getCurrentSession()
+                .createQuery("delete from CartContent where cart_id=" + cartId);
+        query.executeUpdate();
     }
 
-  //  @Override
+    @Override
     public int getShoppingCartRepoSize() {
         List query = sessionFactory.getCurrentSession().createQuery("from ShoppingCart")
                 .list();
         return query.size();
     }
 
-   // @Override
+    @Override
     public String getShoppingCartsNames() {
         Query query = sessionFactory.getCurrentSession()
                 .createSQLQuery("select cartName from shoppingCarts");
@@ -69,22 +73,25 @@ public class HibernateCartRepository implements CartRepository
         return String.join(", ", cartNames);
     }
 
-   // @Override
+    @Override
     public void deleteCartByName(String cartName) {
         Query query = sessionFactory.getCurrentSession()
                 .createQuery("delete ShoppingCart where cartName = '" + cartName + "'");
         query.executeUpdate();
     }
 
-   // @Override
+    @Override
     public void addProductToCart(String cartName, Product product) {
-       Long cartId = getCart(cartName).get().getId();
+        CartContent content = new CartContent();
+        content.setCartId(getCartByName(cartName).get().getId());
+        content.setProductId(product.getId());
+        sessionFactory.getCurrentSession().persist(content);
+        // Long cartId = getCart(cartName).get().getId();
         //ShoppingCart cart = getCart(cartName).get();
 //CartContent content = new CartContent();
 //content.setCart(cartId);
 //content.setProduct(product.getId());
 //sessionFactory.getCurrentSession().save(content);
-
 
 
 //Query query = sessionFactory.getCurrentSession()
@@ -115,18 +122,7 @@ public class HibernateCartRepository implements CartRepository
         return "SELECT id_product FROM products WHERE name='" + productName + "'";
     }
 
-    public Optional<ShoppingCart> getCart(String cartName) {
-        List carts = sessionFactory.getCurrentSession()
-                .createQuery("SELECT ShoppingCart WHERE cartName = '" + cartName + "'")
-                .list();
-        if (!carts.isEmpty()) {
-            return Optional.of((ShoppingCart)carts.get(0));
-        }
-        return Optional.empty();
-
-    }
-
-  //  @Override
+    @Override
     public Optional<Product> getProductByName(String cartName, String productName) {
         List products = sessionFactory.getCurrentSession()
                 .createQuery("from Product where name = '" + productName + "'")
@@ -141,33 +137,76 @@ public class HibernateCartRepository implements CartRepository
         return Optional.empty();
     }
 
-  //  @Override
+
+    @Override
     public void deleteProductFromCart(String cartName, Product product) {
-        String query = "delete from cartsContent where product_id = '" + product.getId() + "' LIMIT 1";
-        sessionFactory.getCurrentSession().createSQLQuery(query).executeUpdate();
+
+        List query = sessionFactory.getCurrentSession()
+                .createQuery("from CartContent where product_id =" + product.getId()).list();
+        CartContent cart = (CartContent) query.get(0);
+        sessionFactory.getCurrentSession().delete(cart);
+
+//        CartContent cart = (CartContent)sessionFactory.getCurrentSession()
+//                .createCriteria(CartContent.class)
+//                .add(Restrictions.eq("product_id", product.getId()))
+//                .setMaxResults(1)
+//                .uniqueResult();
+//        sessionFactory.getCurrentSession().remove(cart);
+//
+//        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(CartContent.class);
+//        criteria.add(Restrictions.eq("product_id", product.getId()));
+//
+//        CartContent cartToDelete = (CartContent)criteria.list().get(0);
+//
+//
+//        sessionFactory.getCurrentSession().delete(cartToDelete);
+
+
+//        String query = "delete from cartsContent where product_id = '" + product.getId() + "' LIMIT 1";
+//        sessionFactory.getCurrentSession().createSQLQuery(query).executeUpdate();
     }
 
-   // @Override
+    @Override
     public void printCartContent(String cartName) {
-//Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Product.class)
-//
-//
-//
-//        for (Long element : getProductIDlist(cartName)) {
-//            String query = "SELECT  name, price, actualPrice, description, discount, category " +
-//                    "FROM products, categories " +
-//                    "WHERE id_product='" + element + "' AND id_category=category_id";
-//            Product product = (Product) jdbcTemplate.queryForObject(query, new BeanPropertyRowMapper(Product.class));
-//            product.setId(element);
-//            System.out.println(product);
-//        }
-
+        for (CartContent element : getCartContentList(cartName)) {
+            Product product = getProductById(element.getProductId()).get();
+            System.out.println(product);
+        }
     }
 
-   // @Override
+    @Override
     public BigDecimal getTotalCartPrice(String cartName) {
         BigDecimal sum = new BigDecimal(0);
+        for (CartContent element : getCartContentList(cartName)) {
+            Product product = getProductById(element.getProductId()).get();
+            sum = sum.add(product.getActualPrice());
+        }
         return sum;
+    }
+
+    private List<CartContent> getCartContentList(String cartName) {
+        Long cartId = getCartByName(cartName).get().getId();
+        Criteria criteria = sessionFactory.getCurrentSession().createCriteria(CartContent.class)
+                .add(Restrictions.eq("cartID", cartId));
+        return criteria.list();
+    }
+
+    private Optional<ShoppingCart> getCartByName(String cartName) {
+        List carts = sessionFactory.getCurrentSession()
+                .createQuery("from ShoppingCart WHERE cartName = '" + cartName + "'")
+                .list();
+        if (!carts.isEmpty()) {
+            return Optional.of((ShoppingCart) carts.get(0));
+        }
+        return Optional.empty();
+    }
+
+    private Optional<Product> getProductById(Long productId) {
+        List products = sessionFactory.getCurrentSession()
+                .createQuery("from Product where id = '" + productId + "'")
+                .list();
+        Product product = (Product) products.get(0);
+        return Optional.of(product);
     }
 
     public Optional<ShoppingCart> findCartById(Long id) {
