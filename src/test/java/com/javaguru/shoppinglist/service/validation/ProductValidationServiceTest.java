@@ -76,8 +76,8 @@ public class ProductValidationServiceTest {
         product.setActualPrice(new BigDecimal(30));
         product.setDescription("TEST_DESCRIPTION");
         product.setDiscount(new BigDecimal(50));
-        product.setCategory("fruits");
-        product.setId(102l);
+        product.setCategory("FRUITS");
+        product.setId(102L);
         return product;
     }
 }
