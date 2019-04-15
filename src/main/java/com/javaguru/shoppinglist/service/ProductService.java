@@ -5,6 +5,8 @@ import com.javaguru.shoppinglist.repository.ProductRepository;
 import com.javaguru.shoppinglist.service.validation.ProductValidation.ProductValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -24,6 +26,7 @@ public class ProductService {
     private final BigDecimal bd1 = BigDecimal.valueOf(1);
     private final BigDecimal bd100 = BigDecimal.valueOf(100);
 
+    @Transactional
     public Long createProduct(String name, String price, String description, String discount, String category) {
         Product product = new Product();
         BigDecimal productPrice = priceFilter(price);
@@ -49,7 +52,7 @@ public class ProductService {
         return productRepo.getProductByName(productName);
     }
 
-    BigDecimal priceFilter(String price) {
+    private BigDecimal priceFilter(String price) {
         if (price.equals("")) {
             price = "0";
         }
@@ -59,7 +62,7 @@ public class ProductService {
         return new BigDecimal(price).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-    BigDecimal discountFilter(String discount, BigDecimal price) {
+    private BigDecimal discountFilter(String discount, BigDecimal price) {
         if (discount.equals("") || price.compareTo(MIN_PRICE_TO_DISCOUNT) < 0) {
             discount = "0";
         }
@@ -69,14 +72,14 @@ public class ProductService {
         return new BigDecimal(discount).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-     String descriptionFilter(String description) {
+    private String descriptionFilter(String description) {
         if (description.equals("")) {
             description = "NO DESCRIPTION";
         }
         return description;
     }
 
-    BigDecimal actualPriceCalculator(BigDecimal price, BigDecimal discount) {
+    private BigDecimal actualPriceCalculator(BigDecimal price, BigDecimal discount) {
         BigDecimal discountFactor = discount.divide(bd100);
         discountFactor = bd1.subtract(discountFactor);
         return price.multiply(discountFactor).setScale(2, BigDecimal.ROUND_HALF_UP);

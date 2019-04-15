@@ -11,11 +11,11 @@ public class ConsoleUIMenu {
         this.actions = actions;
     }
 
-    public int getConsoleMenuSize() {
+    int getConsoleMenuSize() {
         return actions.size();
     }
 
-    public Action getActionName(int response) {
+    Action getActionName(int response) {
         return actions.get(response);
     }
 }

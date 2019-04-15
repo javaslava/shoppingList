@@ -5,24 +5,26 @@ import com.javaguru.shoppinglist.domain.ShoppingCart;
 import com.javaguru.shoppinglist.repository.CartRepository;
 import com.javaguru.shoppinglist.service.validation.CartRepositorySizeValidator;
 import com.javaguru.shoppinglist.service.validation.CartValidation.CartValidationService;
-import com.javaguru.shoppinglist.service.validation.ProductNotNullValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
 public class CartService {
-    private final CartRepository cartRepo;
     private final CartValidationService validationService;
+    private final CartRepository cartRepo;
 
     @Autowired
-    public CartService(CartRepository cartRepo, CartValidationService validationService) {
-        this.cartRepo = cartRepo;
+    public CartService(CartValidationService validationService,
+                       CartRepository cartRepo) {
         this.validationService = validationService;
+        this.cartRepo = cartRepo;
     }
 
+    @Transactional
     public String createCart(String name) {
         ShoppingCart cart = new ShoppingCart();
         cart.setName(name);
@@ -40,23 +42,21 @@ public class CartService {
     }
 
     public BigDecimal getTotalCartPrice(String cartName) {
-        return cartRepo.getTotalCartPrice(cartName);
+        ShoppingCart cart = getCartByName(cartName).get();
+        return cartRepo.getTotalCartPrice(cart);
     }
 
     public void printCartContent(String cartName) {
-        cartRepo.printCartContent(cartName);
+        ShoppingCart cart = getCartByName(cartName).get();
+        cartRepo.printCartContent(cart);
     }
 
     public void deleteProductFromCart(String cartName, String productNameToDelete) {
-        Optional<Product> productToDelete = cartRepo.getProductByName(cartName, productNameToDelete);
+        ShoppingCart cart = getCartByName(cartName).get();
+        Optional<Product> productToDelete = cartRepo.getProductByName(cart, productNameToDelete);
         productToDelete.orElseThrow(() ->
                 new IllegalArgumentException("Product, named " + productNameToDelete + " not found"));
-        cartRepo.deleteProductFromCart(cartName, productToDelete.get());
-    }
-
-    public void addProductToCart(String cartName, Optional<Product> product) {
-        new ProductNotNullValidator().validate(product);
-        cartRepo.addProductToCart(cartName, product.get());
+        cartRepo.deleteProductFromCart(cart, productToDelete.get());
     }
 
     public String getShoppingCartsNames() {
@@ -69,5 +69,9 @@ public class CartService {
 
     public void checkCartRepoNotEmpty() {
         new CartRepositorySizeValidator().validate(cartRepo.getShoppingCartRepoSize());
+    }
+
+    public Optional<ShoppingCart> getCartByName(String cartName) {
+        return cartRepo.getCartByName(cartName);
     }
 }

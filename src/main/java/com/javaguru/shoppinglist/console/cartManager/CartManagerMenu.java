@@ -1,7 +1,5 @@
 package com.javaguru.shoppinglist.console.cartManager;
 
-import com.javaguru.shoppinglist.console.cartManager.CartManager;
-
 import java.util.Map;
 
 public class CartManagerMenu {
